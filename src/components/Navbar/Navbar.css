@@ -1,0 +1,16 @@
+div.navbar {
+    display: flex;
+    flex-direction: row;
+    margin: 0.5rem 5rem 2rem 5rem;
+    background-color: blue;
+    text-align: left;
+    justify-content: space-between;
+}
+
+div.navbar span {
+    font-size: 2rem;
+}
+
+input.search {
+    width: 5rem;
+}
