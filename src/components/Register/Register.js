@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {useSelector} from "react-redux";
 
 export const Register = () => {
@@ -10,6 +10,6 @@ export const Register = () => {
   return (
     <div>full page</div>
   )
-}
+};
 
 export default Register;
