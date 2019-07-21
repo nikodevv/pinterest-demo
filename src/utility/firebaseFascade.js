@@ -13,6 +13,9 @@ export class firebaseAuth {
         if (snapshot.exists && snapshot.data().username !== undefined) {
             return snapshot.data();
         }
+        return {
+            username: null
+        }
     }
 
 }

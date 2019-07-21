@@ -1,7 +1,7 @@
 import firebase from 'firebase';
+import MockFirebase from "mock-cloud-firestore";
 import {firebaseAuth} from "./firebaseFascade";
 import * as firebaseLocations from './firebaseLocations';
-import MockFirebase from "mock-cloud-firestore";
 
 const fixtureData = {
       __collection__: {
@@ -72,8 +72,15 @@ describe('Prompts user to login with firebase', () => {
         expect(userModel.username).toEqual(fixtureData.__collection__.users.__doc__.testUserId.username);
     });
 
-    test('fetches returns username from userModel if user model has username', async () => {
+    test('fetches returns null username from userModel if user model doesnt have username', async () => {
+        fixtureData.__collection__.users.__doc__.testUserId.username = undefined;
         const userModel = await firebaseAuth.fetchOwnUserModel();
-        expect(userModel.username).toEqual(fixtureData.__collection__.users.__doc__.testUserId.username);
+        expect(userModel.username).toEqual(null);
+    });
+
+    test('if user account not stored in database, returns a usermodel with username null', async () => {
+        delete fixtureData.__collection__.users.__doc__.testUserId;
+        const userModel = await firebaseAuth.fetchOwnUserModel();
+        expect(userModel.username).toEqual(null);
     })
 });
