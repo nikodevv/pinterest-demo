@@ -93,7 +93,6 @@ describe('Navbar helpers', ()=>{
 
   test('login function dispatches a start loading action', () => {
     fail('finish test')
-
   });
 
   test('login function fetches user data', () => {
