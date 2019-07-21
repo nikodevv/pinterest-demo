@@ -30,10 +30,19 @@ describe('auth reducer', ()=>{
     expect(Object.keys(newState).length + 1).toEqual(Object.keys(initialState).length);
   });
 
-  test('login action does nto change loggedIn state if loggedIn=true', () => {
+  test('login action does not change loggedIn state if loggedIn=true', () => {
     const initialState = {...initialAuthState, loading: true};
     const newState = auth(initialState, authActionCreators.startLoading());
     expect(newState.loading).toEqual(true);
   });
 
+  test('setUser action finishes loading and updates user data', () => {
+    const initialState = {...initialAuthState, username: null, loading: true};
+    const userObject = {
+      username: 'validUsername'
+    };
+    const newState = auth(initialState, authActionCreators.finishLogin(userObject));
+    expect(newState.loading).toEqual(false);
+    expect(newState.username).toEqual(userObject.username);
+  })
 });
