@@ -27,8 +27,16 @@ describe('<Register />', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
-  test('renders null if username is null', () => {
-    initialStoreData.auth.username = null;
+  test('renders null if auth is loading', () => {
+    initialStoreData.auth.loading = true;
+    const wrapper = mount(
+      <Provider store={mockStore(initialStoreData)}>
+        <Register/>
+      </Provider>);
+    expect(wrapper.find('div').isEmpty()).toEqual(true);
+  });
+
+  test('renders null if username is not null', () => {
     const wrapper = mount(
       <Provider store={mockStore(initialStoreData)}>
         <Register/>
@@ -37,6 +45,7 @@ describe('<Register />', () => {
   });
 
   test('renders registration component if username is null', () => {
+    initialStoreData.auth.username = null;
     const wrapper = mount(
       <Provider store={mockStore(initialStoreData)}>
         <Register/>
