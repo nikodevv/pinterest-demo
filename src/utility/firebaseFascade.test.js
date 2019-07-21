@@ -1,11 +1,39 @@
 import firebase from 'firebase';
 import {firebaseAuth} from "./firebaseFascade";
+import * as firebaseLocations from './firebaseLocations';
+import MockFirebase from "mock-cloud-firestore";
+
+const fixtureData = {
+      __collection__: {
+    users: {
+      __doc__: {
+        testUserId: {
+          age: 15,
+          username: 'testUser1',
+          // __collection__: {
+          //   friends: {
+          //     __doc__: {
+          //       user_b: {
+          //         reference: '__ref__:users/user_b'
+          //       }
+          //     }
+          //   }
+          // }
+        },
+      }
+    }
+  }
+};
 
 describe('Prompts user to login with firebase', () => {
     let validUserResponse;
     let mockAuth;
-    function mockPopupProvider () {
+    function authWrapper () {
     }
+
+    beforeAll(() => {
+        firebaseLocations.UsersRef = new MockFirebase(fixtureData).firestore().collection('users');
+    });
 
     beforeEach(()=> {
         // Mocks firebase github login
@@ -17,12 +45,13 @@ describe('Prompts user to login with firebase', () => {
         const authPromise = new Promise((resolve, reject) => {
             resolve(validUserResponse)
         });
-        mockPopupProvider = jest.fn();
-        mockPopupProvider.signInWithPopup = jest.fn();
+        authWrapper = jest.fn();
+        authWrapper.signInWithPopup = jest.fn();
         mockAuth = function() {
-            mockPopupProvider.signInWithPopup.mockReturnValue(authPromise);
-            return mockPopupProvider
+            authWrapper.signInWithPopup.mockReturnValue(authPromise);
+            return authWrapper
         };
+        authWrapper.currentUser = { uid: 'testUserId' };
         mockAuth.GithubAuthProvider = jest.fn(); // placeholder assignment
         firebase.auth = mockAuth;
     });
@@ -33,8 +62,18 @@ describe('Prompts user to login with firebase', () => {
     });
 
     test( 'Opens signin popup', async ()=>{
-        expect(mockPopupProvider.signInWithPopup).toBeCalledTimes(0);
+        expect(authWrapper.signInWithPopup).toBeCalledTimes(0);
         await firebaseAuth.loginWithGithub();
-        expect(mockPopupProvider.signInWithPopup).toBeCalledTimes(1);
+        expect(authWrapper.signInWithPopup).toBeCalledTimes(1);
     });
+
+    test('fetches returns username from userModel if user model has username', async () => {
+        const userModel = await firebaseAuth.fetchOwnUserModel();
+        expect(userModel.username).toEqual(fixtureData.__collection__.users.__doc__.testUserId.username);
+    });
+
+    test('fetches returns username from userModel if user model has username', async () => {
+        const userModel = await firebaseAuth.fetchOwnUserModel();
+        expect(userModel.username).toEqual(fixtureData.__collection__.users.__doc__.testUserId.username);
+    })
 });

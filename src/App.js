@@ -10,7 +10,9 @@ import firebaseConfig from './config/firebaseConfig';
 import Router from "./components/Router";
 import rootReducer from './reducers'
 
-firebase.initializeApp(firebaseConfig);
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+export const db = firebase.database(firebaseApp);
+
 const store = createStore(
     rootReducer,
     applyMiddleware(thunk)

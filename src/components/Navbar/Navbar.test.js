@@ -79,7 +79,7 @@ describe('Navbar helpers', ()=>{
   });
 
   test('login function calls dispatch', async ()=>{
-    const mock = jest.fn(()=>console.log("THIS SHIT IS CALLED"));
+    const mock = jest.fn();
     expect(mock).toBeCalledTimes(0);
     await helpers.login(mock);
     expect(mock).toBeCalledTimes(1);
@@ -91,12 +91,15 @@ describe('Navbar helpers', ()=>{
     expect(dispatcherPlaceholder).toBeCalledWith(authActionCreators.login());
   });
 
-  test('login function dispatches a start loading action', () => {
+  test('login function dispatches a start loading action', async () => {
     fail('finish test')
   });
 
-  test('login function fetches user data', () => {
-    fail('finish test')
+  test('login function fetches user data', async () => {
+    firebaseAuth.fetchOwnUserModel = jest.fn();
+    expect(firebaseAuth.fetchUserModel).toBeCalledTimes(0);
+    await helpers.login(dispatcherPlaceholder);
+    expect(firebaseAuth.fetchUserModel).toBeCalledTimes(1);
   });
 
   test('login function fetches user data', () => {
