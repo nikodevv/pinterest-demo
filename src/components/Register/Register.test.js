@@ -8,12 +8,16 @@ import Register from './Register';
 configure({adapter: new Adapter()});
 const mockStore = configureMockStore();
 describe('<Register />', () => {
-  const initialStoreData = {
-    auth: {
-      loading: false,
-      username: 'validUsername'
-    }
-  };
+  let initialStoreData;
+
+  beforeEach(()=>{
+    initialStoreData = {
+      auth: {
+        loading: false,
+        username: 'validUsername'
+      }
+    };
+  });
 
   test('renders', () => {
     const wrapper = shallow(
@@ -30,5 +34,13 @@ describe('<Register />', () => {
         <Register/>
       </Provider>);
     expect(wrapper.find('div').isEmpty()).toEqual(true);
+  });
+
+  test('renders registration component if username is null', () => {
+    const wrapper = mount(
+      <Provider store={mockStore(initialStoreData)}>
+        <Register/>
+      </Provider>);
+    expect(wrapper.find('div').isEmpty()).toEqual(false);
   });
 });
