@@ -90,4 +90,23 @@ describe('Navbar helpers', ()=>{
     await helpers.login(dispatcherPlaceholder);
     expect(dispatcherPlaceholder).toBeCalledWith(authActionCreators.login());
   });
+
+  test('login function dispatches a start loading action', () => {
+    fail('finish test')
+
+  });
+
+  test('login function fetches user data', () => {
+    fail('finish test')
+  });
+
+  test('login function fetches user data', () => {
+
+    fail('finish test')
+  });
+
+  test('dispatches an update username action', () => {
+
+    fail('finish test')
+  })
 });

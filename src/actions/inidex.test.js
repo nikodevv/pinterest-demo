@@ -12,4 +12,9 @@ describe('Auth actions', () => {
         const actionType = authActionCreators.login().type;
         expect(actionType).toEqual(authActions.LOGIN);
     });
+
+    test('auth.startLoading creates a LOADING_AUTH type action', () => {
+        const actionType = authActionCreators.startLoading().type;
+        expect(actionType).toEqual(authActions.LOADING_AUTH);
+    })
 });
