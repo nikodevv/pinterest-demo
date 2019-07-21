@@ -7,7 +7,7 @@
 import { firebaseAuth } from "../../utility/firebaseFascade";
 import {authActionCreators} from "../../actions";
 
-export let login = async (dispatch) => {
+export const login = async (dispatch) => {
   await firebaseAuth.loginWithGithub().then();
   const loginAction = authActionCreators.login();
   dispatch(loginAction);
