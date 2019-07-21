@@ -11,7 +11,6 @@ configure({adapter: new Adapter()});
 const mockStore = configureMockStore();
 
 describe('<Navbar />', () => {
-  let dispatcherPlaceholder = () => null;
   const initialStoreData = {
     auth: {
       loading: false,
@@ -24,6 +23,10 @@ describe('<Navbar />', () => {
 
   });
 
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   test('renders', () => {
     const wrapper = shallow(
         <Provider store={mockStore()}>
@@ -32,31 +35,10 @@ describe('<Navbar />', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
-  test('login function calls firebase wrapper for sign in withpopup', ()=>{
-    firebaseAuth.loginWithGithub = jest.fn();
-    firebaseAuth.loginWithGithub.mockReturnValue(new Promise(resolve => resolve()));
-    expect(firebaseAuth.loginWithGithub).toBeCalledTimes(0);
-    helpers.login(dispatcherPlaceholder());
-    expect(firebaseAuth.loginWithGithub).toBeCalledTimes(1);
-  });
-
-  test('login function calls dispatch', async ()=>{
-    dispatcherPlaceholder = jest.fn();
-    expect(dispatcherPlaceholder).toBeCalledTimes(0);
-    await helpers.login(dispatcherPlaceholder);
-    expect(dispatcherPlaceholder).toBeCalledTimes(1);
-  });
-
-  test('login function calls dispatch with correct action', async ()=>{
-    dispatcherPlaceholder = jest.fn();
-    await helpers.login(dispatcherPlaceholder);
-    expect(dispatcherPlaceholder).toBeCalledWith(authActionCreators.login());
-  });
-
   test('Github button clicked calls login function', () => {
     const mockFn = jest.fn();
     // need to use spyOn because login is readonly (can't be overwritten with RHS assignment).
-    const loginSpy = jest.spyOn(helpers, 'login').mockImplementation(mockFn);
+    let loginSpy = jest.spyOn(helpers, 'login').mockImplementation(mockFn);
     const wrapper = mount(
       <Provider store={mockStore(initialStoreData)}>
         <Navbar/>
@@ -75,5 +57,37 @@ describe('<Navbar />', () => {
     const githubBtnExists = wrapper.exists('#githubButton');
     expect(githubBtnExists).toEqual(false);
   });
+});
 
+describe('Navbar helpers', ()=>{
+  let dispatcherPlaceholder = () => null;
+
+  beforeEach(()=>{
+    firebaseAuth.loginWithGithub = () => new Promise(resolve=>resolve()); // disables outbound call
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('login function calls firebase wrapper for sign in withpopup', ()=>{
+    firebaseAuth.loginWithGithub = jest.fn();
+    firebaseAuth.loginWithGithub.mockReturnValue(new Promise(resolve => resolve()));
+    expect(firebaseAuth.loginWithGithub).toBeCalledTimes(0);
+    helpers.login(dispatcherPlaceholder);
+    expect(firebaseAuth.loginWithGithub).toBeCalledTimes(1);
+  });
+
+  test('login function calls dispatch', async ()=>{
+    const mock = jest.fn(()=>console.log("THIS SHIT IS CALLED"));
+    expect(mock).toBeCalledTimes(0);
+    await helpers.login(mock);
+    expect(mock).toBeCalledTimes(1);
+  });
+
+  test('login function calls dispatch with correct action', async ()=>{
+    dispatcherPlaceholder = jest.fn();
+    await helpers.login(dispatcherPlaceholder);
+    expect(dispatcherPlaceholder).toBeCalledWith(authActionCreators.login());
+  });
 });
