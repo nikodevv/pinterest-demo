@@ -14,3 +14,10 @@ div.navbar span {
 input.search {
     width: 5rem;
 }
+
+.githubLoginButton {
+    /* Intentionally blank.
+     * Used by enzyme as a selector for the github login button.
+     * Id selector does not work due to 3rd party library implementation.
+     */
+}

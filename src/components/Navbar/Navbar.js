@@ -1,18 +1,18 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { GithubLoginButton } from "react-social-login-buttons";
 import './Navbar.css';
-import {Dispatch} from "redux";
-import {authActionCreators} from "../../actions";
+import {login} from "./helpers";
 
-export const NavbarComponent = (props) => {
-  const {loggedIn, loginWithGithub} = props;
+export const NavbarComponent = () => {
+  const loggedIn = useSelector( state => state.auth.loggedIn );
+  const dispatch = useDispatch();
 
   return  <div className="container navbar">
     <input className="search"/>
 
     {/*Logged out nav bar items*/}
-    {!loggedIn && <GithubLoginButton onClick={loginWithGithub}/>}
+    {!loggedIn && <GithubLoginButton id="githubButton" onClick={()=>login(dispatch)}/>}
 
     {/*Logged in nav bar items*/}
     {!!loggedIn &&
@@ -23,13 +23,4 @@ export const NavbarComponent = (props) => {
 
 };
 
-const mapState = (state) => {
-  return { loggedIn: state.auth.loggedIn }
-};
-
-const mapDispatch = (dispatch) => {
-  return { loginWithGithub: () => dispatch(authActionCreators.login()) }
-};
-
-export default connect(mapState, mapDispatch)(NavbarComponent);
-
+export default NavbarComponent;
