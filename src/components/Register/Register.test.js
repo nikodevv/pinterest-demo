@@ -85,4 +85,16 @@ describe('<Register />', () => {
       expect(setUsername).toBeCalledWith(key);
     })
   });
+
+  test('submit form handler calls firebase Fascade endpoint to check if username exists', ()=>{
+    fail('finish test')
+  });
+
+  test('submit form handler sends alert if username exists in database', ()=>{
+    fail('finish test');
+  });
+
+  test('submit form handler calls set username in fascade if username is not taken', ()=>{
+    fail('finish test');
+  })
 });

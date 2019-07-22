@@ -20,6 +20,17 @@ export class firebaseAuth {
 
   static signOut = () => {
     return firebase.auth().signOut()
+  };
+
+  static findUsersWithUsername = async (queryStr) => {
+    const query = await UsersRef().where('username','>=', queryStr);
+    const snapshot = await query.get();
+    const userModels = [];
+    snapshot.forEach(doc => {
+      const userObj = {...doc.data(), id: doc.id };
+      userModels.push(userObj)
+    });
+    return userModels;
   }
 
 }

@@ -16,6 +16,12 @@ export const usersFixtureData = {
             //   }
             // }
           },
+          testUserId2: {
+            //no username
+          },
+          testUserId3: {
+            username: 'QduU43E'
+          },
         }
       }
     }

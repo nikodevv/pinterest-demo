@@ -6,8 +6,8 @@ import {mockAuthBuilder, usersFixtureData, validUserResponse} from "../testAsset
 
 describe('Prompts user to login with firebase', () => {
 
-    beforeAll(() => {
-        firebaseLocations.UsersRef = ()=>new MockFirebase(usersFixtureData).firestore().collection('users');
+    beforeEach(() => {
+        firebaseLocations.UsersRef = ()=>new MockFirebase({...usersFixtureData}).firestore().collection('users');
     });
 
     beforeEach(()=> {
@@ -35,13 +35,17 @@ describe('Prompts user to login with firebase', () => {
     });
 
     test('fetches returns null username from userModel if user model doesnt have username', async () => {
-        usersFixtureData.__collection__.users.__doc__.testUserId.username = undefined;
+        const fixtureData = JSON.parse(JSON.stringify(usersFixtureData));
+        fixtureData.__collection__.users.__doc__.testUserId.username = undefined;
+        firebaseLocations.UsersRef = ()=>new MockFirebase(fixtureData).firestore().collection('users');
         const userModel = await firebaseAuth.fetchOwnUserModel();
         expect(userModel.username).toEqual(null);
     });
 
     test('if user account not stored in database, returns a usermodel with username null', async () => {
-        delete usersFixtureData.__collection__.users.__doc__.testUserId;
+        const fixtureData = JSON.parse(JSON.stringify(usersFixtureData));
+        delete fixtureData.__collection__.users.__doc__.testUserId;
+        firebaseLocations.UsersRef = ()=>new MockFirebase(fixtureData).firestore().collection('users');
         const userModel = await firebaseAuth.fetchOwnUserModel();
         expect(userModel.username).toEqual(null);
     });
@@ -50,5 +54,13 @@ describe('Prompts user to login with firebase', () => {
         expect(firebase.auth().signOut).toBeCalledTimes(0);
         firebaseAuth.signOut();
         expect(firebase.auth().signOut).toBeCalledTimes(1);
-    })
+    });
+
+    test('Query username returns an array of user models with a given username substring', async ()=>{
+        const username = usersFixtureData.__collection__.users.__doc__.testUserId.username;
+        const users = await firebaseAuth.findUsersWithUsername(username.substr(0,4));
+        expect(users[0].username).toEqual(username);
+        expect(users[0].id).toEqual('testUserId');
+        expect(users.length).toEqual(1);
+    });
 });
