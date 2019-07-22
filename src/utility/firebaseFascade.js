@@ -31,6 +31,11 @@ export class firebaseAuth {
       userModels.push(userObj)
     });
     return userModels;
+  };
+
+  static setUsername = (username) => {
+    const uid = firebase.auth().currentUser.uid;
+    return UsersRef().doc(uid).set({username}, {merge: true});
   }
 
 }

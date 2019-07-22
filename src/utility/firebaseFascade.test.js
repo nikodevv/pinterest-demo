@@ -63,4 +63,17 @@ describe('Prompts user to login with firebase', () => {
         expect(users[0].id).toEqual('testUserId');
         expect(users.length).toEqual(1);
     });
+
+    test('setUsername writes to users collection with a username field', async ()=>{
+        const username = 'tesusername23';
+        const uid = firebase.auth().currentUser.uid;
+        const fixtureData = JSON.parse(JSON.stringify(usersFixtureData));
+        delete fixtureData.__collection__.users.__doc__.testUserId;
+        firebaseLocations.UsersRef = ()=>new MockFirebase(fixtureData).firestore().collection('users');
+        let snapshot = await firebaseLocations.UsersRef().doc(uid).get();
+        expect(snapshot.exists).toEqual(false);
+        await firebaseAuth.setUsername(username);
+        snapshot = await firebaseLocations.UsersRef().doc(uid).get();
+        expect(snapshot.data().username).toEqual(username);
+    })
 });
