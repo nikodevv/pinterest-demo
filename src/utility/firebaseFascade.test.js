@@ -44,5 +44,11 @@ describe('Prompts user to login with firebase', () => {
         delete usersFixtureData.__collection__.users.__doc__.testUserId;
         const userModel = await firebaseAuth.fetchOwnUserModel();
         expect(userModel.username).toEqual(null);
+    });
+
+    test('signout calls firebase sign out', ()=>{
+        expect(firebase.auth().signOut).toBeCalledTimes(0);
+        firebaseAuth.signOut();
+        expect(firebase.auth().signOut).toBeCalledTimes(1);
     })
 });
