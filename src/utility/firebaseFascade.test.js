@@ -2,58 +2,20 @@ import firebase from 'firebase';
 import MockFirebase from "mock-cloud-firestore";
 import {firebaseAuth} from "./firebaseFascade";
 import * as firebaseLocations from './firebaseLocations';
-
-const fixtureData = {
-      __collection__: {
-    users: {
-      __doc__: {
-        testUserId: {
-          age: 15,
-          username: 'testUser1',
-          // __collection__: {
-          //   friends: {
-          //     __doc__: {
-          //       user_b: {
-          //         reference: '__ref__:users/user_b'
-          //       }
-          //     }
-          //   }
-          // }
-        },
-      }
-    }
-  }
-};
+import {mockAuthBuilder, usersFixtureData, validUserResponse} from "../testAssets/firebaseMocks";
 
 describe('Prompts user to login with firebase', () => {
-    let validUserResponse;
-    let mockAuth;
-    function authWrapper () {
-    }
 
     beforeAll(() => {
-        firebaseLocations.UsersRef = new MockFirebase(fixtureData).firestore().collection('users');
+        firebaseLocations.UsersRef = ()=>new MockFirebase(usersFixtureData).firestore().collection('users');
     });
 
     beforeEach(()=> {
-        // Mocks firebase github login
-        validUserResponse = {
-        user: {
-            uid: "testUid1"
-        }
-    };
-        const authPromise = new Promise((resolve, reject) => {
-            resolve(validUserResponse)
-        });
-        authWrapper = jest.fn();
-        authWrapper.signInWithPopup = jest.fn();
-        mockAuth = function() {
-            authWrapper.signInWithPopup.mockReturnValue(authPromise);
-            return authWrapper
-        };
-        authWrapper.currentUser = { uid: 'testUserId' };
-        mockAuth.GithubAuthProvider = jest.fn(); // placeholder assignment
-        firebase.auth = mockAuth;
+        firebase.auth = mockAuthBuilder();
+    });
+
+    afterEach(()=>{
+        jest.resetAllMocks();
     });
 
     test( 'Returns firebase user object on success', async ()=>{
@@ -62,24 +24,24 @@ describe('Prompts user to login with firebase', () => {
     });
 
     test( 'Opens signin popup', async ()=>{
-        expect(authWrapper.signInWithPopup).toBeCalledTimes(0);
+        expect(firebase.auth().signInWithPopup).toBeCalledTimes(0);
         await firebaseAuth.loginWithGithub();
-        expect(authWrapper.signInWithPopup).toBeCalledTimes(1);
+        expect(firebase.auth().signInWithPopup).toBeCalledTimes(1);
     });
 
     test('fetches returns username from userModel if user model has username', async () => {
         const userModel = await firebaseAuth.fetchOwnUserModel();
-        expect(userModel.username).toEqual(fixtureData.__collection__.users.__doc__.testUserId.username);
+        expect(userModel.username).toEqual(usersFixtureData.__collection__.users.__doc__.testUserId.username);
     });
 
     test('fetches returns null username from userModel if user model doesnt have username', async () => {
-        fixtureData.__collection__.users.__doc__.testUserId.username = undefined;
+        usersFixtureData.__collection__.users.__doc__.testUserId.username = undefined;
         const userModel = await firebaseAuth.fetchOwnUserModel();
         expect(userModel.username).toEqual(null);
     });
 
     test('if user account not stored in database, returns a usermodel with username null', async () => {
-        delete fixtureData.__collection__.users.__doc__.testUserId;
+        delete usersFixtureData.__collection__.users.__doc__.testUserId;
         const userModel = await firebaseAuth.fetchOwnUserModel();
         expect(userModel.username).toEqual(null);
     })

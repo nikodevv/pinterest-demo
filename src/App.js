@@ -11,7 +11,7 @@ import Router from "./components/Router";
 import rootReducer from './reducers'
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
-export const db = firebase.database(firebaseApp);
+export const db = firebase.firestore(firebaseApp);
 
 const store = createStore(
     rootReducer,

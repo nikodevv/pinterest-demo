@@ -7,6 +7,8 @@ import * as helpers from './helpers';
 import {Provider} from "react-redux";
 import {firebaseAuth} from "../../utility/firebaseFascade";
 import {authActionCreators} from "../../actions";
+import {mockAuthBuilder} from "../../testAssets/firebaseMocks";
+import * as firebase from "firebase";
 configure({adapter: new Adapter()});
 const mockStore = configureMockStore();
 
@@ -20,7 +22,6 @@ describe('<Navbar />', () => {
 
   beforeEach(()=>{
     firebaseAuth.loginWithGithub = () => new Promise(resolve=>resolve()); // disables outbound call
-
   });
 
   afterEach(() => {
@@ -64,6 +65,7 @@ describe('Navbar helpers', ()=>{
 
   beforeEach(()=>{
     firebaseAuth.loginWithGithub = () => new Promise(resolve=>resolve()); // disables outbound call
+    firebase.auth = mockAuthBuilder();
   });
 
   afterEach(() => {
@@ -78,11 +80,11 @@ describe('Navbar helpers', ()=>{
     expect(firebaseAuth.loginWithGithub).toBeCalledTimes(1);
   });
 
-  test('login function calls dispatch', async ()=>{
+  test('login function calls dispatch 3 times', async ()=>{
     const mock = jest.fn();
     expect(mock).toBeCalledTimes(0);
     await helpers.login(mock);
-    expect(mock).toBeCalledTimes(1);
+    expect(mock).toBeCalledTimes(3);
   });
 
   test('login function calls dispatch with correct action', async ()=>{
@@ -92,23 +94,22 @@ describe('Navbar helpers', ()=>{
   });
 
   test('login function dispatches a start loading action', async () => {
-    fail('finish test')
+    dispatcherPlaceholder = jest.fn();
+    await helpers.login(dispatcherPlaceholder);
+    expect(dispatcherPlaceholder).toBeCalledWith(authActionCreators.startLoading());
   });
 
   test('login function fetches user data', async () => {
-    firebaseAuth.fetchOwnUserModel = jest.fn();
-    expect(firebaseAuth.fetchUserModel).toBeCalledTimes(0);
+    firebaseAuth.fetchOwnUserModel = jest.fn(()=>new Promise(resolve=>resolve({username: 'myusername'})));
+    expect(firebaseAuth.fetchOwnUserModel).toBeCalledTimes(0);
     await helpers.login(dispatcherPlaceholder);
-    expect(firebaseAuth.fetchUserModel).toBeCalledTimes(1);
+    expect(firebaseAuth.fetchOwnUserModel).toBeCalledTimes(1);
   });
 
-  test('login function fetches user data', () => {
-
-    fail('finish test')
+  test('dispatches an update username action', async () => {
+    const model = {username: 'myusername'}
+    firebaseAuth.fetchOwnUserModel = jest.fn(()=>new Promise(resolve=>resolve({username: model})));
+    await helpers.login(dispatcherPlaceholder);
+    expect(dispatcherPlaceholder).toBeCalledWith(authActionCreators.finishLogin(model));
   });
-
-  test('dispatches an update username action', () => {
-
-    fail('finish test')
-  })
 });

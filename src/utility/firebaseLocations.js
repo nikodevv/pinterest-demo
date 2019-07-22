@@ -3,5 +3,5 @@
 * */
 import { db } from '../App';
 
-export let UsersRef = () => db.ref('users');
+export let UsersRef = () => db.collection('users');
 

@@ -8,8 +8,13 @@ import { firebaseAuth } from "../../utility/firebaseFascade";
 import {authActionCreators} from "../../actions";
 
 export const login = async (dispatch) => {
-  await firebaseAuth.loginWithGithub().then();
+  const startLoadingAction = authActionCreators.startLoading();
+  dispatch(startLoadingAction);
+  await firebaseAuth.loginWithGithub();
   const loginAction = authActionCreators.login();
   dispatch(loginAction);
+  const userModel = await firebaseAuth.fetchOwnUserModel();
+  const storeUsernameAction = authActionCreators.finishLogin(userModel);
+  dispatch(storeUsernameAction);
 };
 
