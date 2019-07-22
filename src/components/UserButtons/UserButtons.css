@@ -1,0 +1,7 @@
+.userButtonsContainer {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+}

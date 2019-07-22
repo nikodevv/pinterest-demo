@@ -10,6 +10,7 @@ import firebaseConfig from './config/firebaseConfig';
 import Router from "./components/Router";
 import rootReducer from './reducers'
 import Register from "./components/Register/Register";
+import UserButtons from "./components/UserButtons";
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 export const db = firebase.firestore(firebaseApp);
@@ -24,6 +25,7 @@ export const App = () => {
       <Provider store={store}>
         <div className="App">
           <Register/>
+          <UserButtons/>
           <Router/>
         </div>
       </Provider>
