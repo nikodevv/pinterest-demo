@@ -1,8 +1,9 @@
+/* Navbar styles */
 div.navbar {
     display: flex;
     flex-direction: row;
-    margin: 0.5rem 5rem 2rem 5rem;
-    background-color: blue;
+    margin: 0.5rem 5rem 0 5rem;
+    background-color: transparent;
     text-align: left;
     justify-content: space-between;
 }
@@ -11,6 +12,48 @@ div.navbar span {
     font-size: 2rem;
 }
 
-input.search {
-    width: 5rem;
+.navbarTextContainer {
+    height: 1.95rem; /* Equal to 3rd party library's github button*/
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin: 0.9rem;
 }
+
+/* Search bar styles */
+.searchBar {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+
+    width: 60%;
+    height: inherit;
+    margin: 0.5rem;
+    border-radius: 0.4rem;
+    box-shadow: 0 0 0 0.1rem #9d9d9d;
+    background-color: #efefef; /* Matching Pinterest */
+}
+
+.searchBar:focus-within {
+    outline-width: 0;
+    box-shadow: 0 0 0 0.25rem #91b9ff;
+}
+
+.searchBarIcon {
+    margin: 0 0.25rem 0 0.75rem;
+}
+
+input.search {
+    width: 100%;
+    background-color: #efefef; /* Matching Pinterest */
+    border-color: transparent;
+    border-radius: 0.4rem;
+    font-size: 1rem;
+    color: #333 /* Matching Pinterest */
+}
+
+.search:focus {
+    outline: 0;
+}
+
