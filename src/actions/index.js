@@ -5,6 +5,10 @@ export const authActions = {
   SIGN_OUT: "SIGN_OUT",
 };
 
+export const modalActions = {
+  TOGGLE_NEW_LINK_VIEW: "TOGGLE_NEW_LINK_VIEW"
+};
+
 export const authActionCreators = {
   login: () => {
     return {
@@ -30,4 +34,10 @@ export const authActionCreators = {
   signOut: () => {
     return { type: authActions.SIGN_OUT }
   },
+};
+
+export const modalActionCreators = {
+  toggleNewLinkModal: () => ({
+    type: modalActions.TOGGLE_NEW_LINK_VIEW
+  }),
 };
