@@ -9,6 +9,7 @@ import './App.css';
 import firebaseConfig from './config/firebaseConfig';
 import Router from "./components/Router";
 import rootReducer from './reducers'
+import Register from "./components/Register/Register";
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 export const db = firebase.firestore(firebaseApp);
@@ -22,6 +23,7 @@ const App = () => {
   return (
       <Provider store={store}>
         <div className="App">
+          <Register/>
           <Router/>
         </div>
       </Provider>
