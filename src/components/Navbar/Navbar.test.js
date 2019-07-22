@@ -17,6 +17,7 @@ describe('<Navbar />', () => {
     auth: {
       loading: false,
       loggedIn: false,
+      username: 'validUsername',
     }
   };
 
@@ -57,6 +58,33 @@ describe('<Navbar />', () => {
       </Provider>);
     const githubBtnExists = wrapper.exists('#githubButton');
     expect(githubBtnExists).toEqual(false);
+  });
+
+  test('a logged in user sees the signout button', () => {
+    initialStoreData.auth.loggedIn = true;
+    initialStoreData.auth.username = 'validUsername';
+    const wrapper = mount(
+      <Provider store={mockStore(initialStoreData)}>
+        <Navbar/>
+      </Provider>);
+    const signOutBtn= wrapper.exists('#signOut');
+    expect(signOutBtn).toEqual(true);
+  });
+
+  test('Clicking signout button signs user out', () => {
+    initialStoreData.auth.loggedIn = true;
+    initialStoreData.auth.username = 'validUsername';
+    const mockFn = jest.fn();
+    // need to use spyOn because signout is readonly (can't be overwritten with RHS assignment).
+    jest.spyOn(helpers, 'signOut').mockImplementation(mockFn);
+    const wrapper = mount(
+      <Provider store={mockStore(initialStoreData)}>
+        <Navbar/>
+      </Provider>);
+    const signOutBtn = wrapper.find('#signOut').last();
+    expect(mockFn).toBeCalledTimes(0);
+    signOutBtn.simulate('click');
+    expect(mockFn).toBeCalledTimes(1);
   });
 });
 

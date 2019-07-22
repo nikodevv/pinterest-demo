@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { GithubLoginButton } from "react-social-login-buttons";
 import './Navbar.css';
-import {login} from "./helpers";
+import {login, signOut} from "./helpers";
 import { FaAt } from 'react-icons/fa';
 
 export const NavbarComponent = () => {
@@ -21,8 +21,11 @@ export const NavbarComponent = () => {
 
     {/*Logged in nav bar items*/}
     {!!loggedIn &&
-      'logged in'
-
+      <div className="navbarTextContainer" id="signOut" onClick={()=>signOut(dispatch)}>
+        <div className="navBarTextItem">
+          Logout
+        </div>
+      </div>
     }
     </div>
 
