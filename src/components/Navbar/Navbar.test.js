@@ -6,7 +6,7 @@ import Navbar from './Navbar';
 import * as helpers from './helpers';
 import {Provider} from "react-redux";
 import {firebaseAuth} from "../../utility/firebaseFascade";
-import {authActionCreators} from "../../actions";
+import {authActionCreators, authActions} from "../../actions";
 import {mockAuthBuilder} from "../../testAssets/firebaseMocks";
 import * as firebase from "firebase";
 configure({adapter: new Adapter()});
@@ -111,5 +111,21 @@ describe('Navbar helpers', ()=>{
     firebaseAuth.fetchOwnUserModel = jest.fn(()=>new Promise(resolve=>resolve({username: model})));
     await helpers.login(dispatcherPlaceholder);
     expect(dispatcherPlaceholder).toBeCalledWith(authActionCreators.finishLogin(model));
+  });
+
+  test('signout calls signout bind of firebaseFascade', async () => {
+    firebaseAuth.signOut = jest.fn();
+    expect(firebaseAuth.signOut).toBeCalledTimes(0);
+    await helpers.signOut(dispatcherPlaceholder);
+    expect(firebaseAuth.signOut).toBeCalledTimes(1);
+  });
+
+  test('signout dispatches signout action', async () => {
+    firebaseAuth.signOut = jest.fn();
+    dispatcherPlaceholder = jest.fn();
+    expect(dispatcherPlaceholder).toBeCalledTimes(0);
+    await helpers.signOut(dispatcherPlaceholder);
+    expect(dispatcherPlaceholder).toBeCalledTimes(1);
+    expect(dispatcherPlaceholder).toBeCalledWith({type: authActions.SIGN_OUT});
   });
 });

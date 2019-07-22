@@ -3,7 +3,6 @@ import {useSelector} from "react-redux";
 
 export const Register = () => {
   const auth = useSelector( state => state.auth);
-  console.log(auth);
   if (auth.username !== null || auth.loading === true) {
     return null;
   }

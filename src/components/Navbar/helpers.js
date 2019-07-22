@@ -18,3 +18,7 @@ export const login = async (dispatch) => {
   dispatch(storeUsernameAction);
 };
 
+export const signOut = async (dispatch) => {
+  await firebaseAuth.signOut();
+  dispatch(authActionCreators.signOut());
+};
