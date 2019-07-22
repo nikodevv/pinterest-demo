@@ -14,6 +14,8 @@ export const auth = (state = initialState, action ) => {
       return {...state, loading: true };
     case authActions.FINISH_LOGIN:
       return {...state, username: action.username, loading: false };
+    case authActions.SIGN_OUT:
+      return {...state, ...initialState};
     default:
       return {...state}
   }

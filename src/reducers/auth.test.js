@@ -1,5 +1,5 @@
 import {auth, initialState as initialAuthState} from "./auth";
-import {authActionCreators} from "../actions";
+import {authActionCreators, authActions} from "../actions";
 
 describe('auth reducer', ()=>{
   test('initializes initial state', ()=>{
@@ -44,5 +44,17 @@ describe('auth reducer', ()=>{
     const newState = auth(initialState, authActionCreators.finishLogin(userObject));
     expect(newState.loading).toEqual(false);
     expect(newState.username).toEqual(userObject.username);
-  })
+  });
+
+  test('signout action resets state to initial state', () => {
+    // loading is set to true because it should be toggled to false, even though it is hypothetically impossible
+    // for the app to be in a state where username !== null and loading === true (unless user edits memory).
+    const loggedInLoadingState = {
+      loading: true,
+      loggedIn: true,
+      username: 'IhaveAsuername'
+    };
+    const newState = auth(loggedInLoadingState, {type: authActions.SIGN_OUT});
+    expect(newState).toEqual(initialAuthState);
+  });
 });

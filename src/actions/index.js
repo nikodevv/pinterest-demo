@@ -2,6 +2,7 @@ export const authActions = {
   LOGIN: "LOGIN",
   LOADING_AUTH: "LOADING_AUTH",
   FINISH_LOGIN: "FINISH_LOGIN",
+  SIGN_OUT: "SIGN_OUT",
 };
 
 export const authActionCreators = {
@@ -25,5 +26,8 @@ export const authActionCreators = {
     }
     action.username = userModel.username;
     return action;
-  }
+  },
+  signOut: () => {
+    return { type: authActions.SIGN_OUT }
+  },
 };
