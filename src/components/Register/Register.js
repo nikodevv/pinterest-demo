@@ -2,8 +2,11 @@ import React from 'react';
 import {useSelector} from "react-redux";
 import './Register.css'
 
-export const filterAlphanumerics = (val) => {
-  return val.replace(/[^a-z0-9]/gi,'');
+
+export const helpers = {
+  filterAlphanumerics: (val) => {
+    return val.replace(/[^a-z0-9]/gi,'');
+  }
 };
 
 export const Register = () => {
@@ -20,7 +23,8 @@ export const Register = () => {
   return (
     <div className='screenOverlay'>
       <form className='formContainer' onSubmit={()=>console.log('clicked')}>
-        <input id='usernameInput' value={username} onChange={(e)=>setUsername(filterAlphanumerics(e.target.value))}/>
+        What would you like your username to be?
+        <input id='usernameInput' value={username} onChange={(e)=>setUsername(helpers.filterAlphanumerics(e.target.value))}/>
       </form>
     </div>
   )

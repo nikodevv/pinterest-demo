@@ -3,7 +3,7 @@ import {configure, mount, shallow} from 'enzyme';
 import configureMockStore from 'redux-mock-store';
 import Adapter from "enzyme-adapter-react-16/build";
 import {Provider} from "react-redux";
-import Register, {filterAlphanumerics} from './Register';
+import Register, {helpers} from './Register';
 
 configure({adapter: new Adapter()});
 const mockStore = configureMockStore();
@@ -60,18 +60,19 @@ describe('<Register />', () => {
 
   test('alphanumeric filter strips out non alphanumeric chars', () => {
     const testValue = 'Test123*** `&),{}TEST';
-    const val = filterAlphanumerics(testValue);
+    const val = helpers.filterAlphanumerics(testValue);
     expect(val).toEqual('Test123TEST');
   });
 
   test('setUsername is called on input value change', () => {
     initialStoreData.auth.username = null;
+    const testInput1 = 'iceFlag'.split('');
     const setUsername = jest.fn();
     const mockUseState = jest.fn((unusedValue) => {
       return [unusedValue, setUsername]
     });
     jest.spyOn(React, 'useState').mockImplementation(mockUseState);
-    const testInput1 = 'iceFlag'.split('');
+    helpers.filterAlphanumerics = (x)=>x;
     expect(mockUseState).toBeCalledTimes(0);
     const wrapper = mount(
       <Provider store={mockStore(initialStoreData)}>
