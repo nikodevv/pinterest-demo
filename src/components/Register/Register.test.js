@@ -4,12 +4,17 @@ import configureMockStore from 'redux-mock-store';
 import Adapter from "enzyme-adapter-react-16/build";
 import {Provider} from "react-redux";
 import Register, {helpers} from './Register';
+import {firebaseAuth} from "../../utility/firebaseFascade";
+import {App} from '../../App';
 
 configure({adapter: new Adapter()});
 const mockStore = configureMockStore();
+window.alert = jest.fn(); // must be defined in outer scope
 describe('<Register />', () => {
   let initialStoreData;
-
+  let event = {
+    preventDefault: ()=>null
+  };
   beforeEach(()=>{
     initialStoreData = {
       auth: {
@@ -18,10 +23,13 @@ describe('<Register />', () => {
         username: 'validUsername',
       }
     };
+    firebaseAuth.findUsersWithUsername = jest.fn(()=>[]);
+    firebaseAuth.setUsername = jest.fn();
+    window.alert = jest.fn();
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    jest.clearAllMocks();
   });
 
   test('renders', () => {
@@ -86,15 +94,45 @@ describe('<Register />', () => {
     })
   });
 
-  test('submit form handler calls firebase Fascade endpoint to check if username exists', ()=>{
-    fail('finish test')
+  test('submit form handler calls firebase Fascade endpoint to check if username exists', ()=> {
+    expect(firebaseAuth.findUsersWithUsername).toBeCalledTimes(0);
+    helpers.handleSubmit('username', jest.fn(), event);
+    expect(firebaseAuth.findUsersWithUsername).toBeCalledTimes(1);
   });
 
-  test('submit form handler sends alert if username exists in database', ()=>{
-    fail('finish test');
+  test('submit form handler returns alert if username exists in database, does not call setUsername', async () => {
+    const username = 'myusername';
+    firebaseAuth.findUsersWithUsername.mockImplementation(()=>([{username}]));
+    expect(window.alert).toBeCalledTimes(0);
+    await helpers.handleSubmit(username, jest.fn(), event);
+    expect(window.alert).toBeCalledTimes(1);
+    expect(firebaseAuth.setUsername).toBeCalledTimes(0);
   });
 
-  test('submit form handler calls set username in fascade if username is not taken', ()=>{
-    fail('finish test');
+  test('submit form handler calls set username in fascade if username is not taken', async ()=>{
+    const username = 'myusername';
+    expect(window.alert).toBeCalledTimes(0);
+    await helpers.handleSubmit(username, jest.fn(), event);
+    expect(window.alert).toBeCalledTimes(0);
+    expect(firebaseAuth.setUsername).toBeCalledTimes(1);
+    expect(firebaseAuth.setUsername).toBeCalledWith(username);
+  });
+
+  test('if form handler setusername promise is resolved, calls dispatch', async ()=> {
+    const username = 'myusername';
+    const mockDispatch = jest.fn();
+    expect(firebaseAuth.setUsername).toBeCalledTimes(0);
+    expect(mockDispatch).toBeCalledTimes(0);
+    await helpers.handleSubmit(username, mockDispatch, event);
+    expect(firebaseAuth.setUsername).toBeCalledTimes(1);
+    expect(mockDispatch).toBeCalledTimes(1);
+  });
+
+  test('form handler stop propagation', async () => {
+    const username = 'myusername';
+    event.preventDefault = jest.fn();
+    expect(event.preventDefault).toBeCalledTimes(0);
+    await helpers.handleSubmit(username, jest.fn(), event);
+    expect(event.preventDefault).toBeCalledTimes(1);
   })
 });

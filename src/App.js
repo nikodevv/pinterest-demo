@@ -19,7 +19,7 @@ const store = createStore(
     applyMiddleware(thunk)
 );
 
-const App = () => {
+export const App = () => {
   return (
       <Provider store={store}>
         <div className="App">
