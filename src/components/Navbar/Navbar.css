@@ -41,7 +41,7 @@ div.navbar span {
 }
 
 .searchBarIcon {
-    margin: 0 0 0 0.5rem;
+    margin: 0 0.25rem 0 0.75rem;
 }
 
 input.search {
@@ -49,7 +49,7 @@ input.search {
     background-color: #efefef; /* Matching Pinterest */
     border-color: transparent;
     border-radius: 0.4rem;
-    font-size: 1.5rem;
+    font-size: 1rem;
     color: #333 /* Matching Pinterest */
 }
 

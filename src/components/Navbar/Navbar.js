@@ -3,16 +3,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import { GithubLoginButton } from "react-social-login-buttons";
 import './Navbar.css';
 import {login, signOut} from "./helpers";
-import { FaAt } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 
 export const NavbarComponent = () => {
-  const loggedIn = useSelector( state => state.auth.loggedIn );
+  const auth = useSelector( state => state.auth );
   const dispatch = useDispatch();
+  const { loggedIn, username} = auth;
 
   return  <div className="container navbar">
     <div className="searchBar">
-      <FaAt className="searchBarIcon" size={'1.9rem'} color='#777'/>
-      <input className="search" placeholder='Username'/>
+      <FaSearch className="searchBarIcon" size={'1.5rem'} color='#777'/>
+      <input className="search" placeholder='username'/>
     </div>
 
 
@@ -21,9 +22,12 @@ export const NavbarComponent = () => {
 
     {/*Logged in nav bar items*/}
     {!!loggedIn &&
-      <div className="navbarTextContainer" id="signOut" onClick={()=>signOut(dispatch)}>
-        <div className="navBarTextItem">
+      <div className="navbarTextContainer">
+        <div className="navBarTextItem" id="signOut" onClick={()=>signOut(dispatch)}>
           Logout
+        </div>
+        <div className="navBarTextItem">
+          ({!!username && username})
         </div>
       </div>
     }
