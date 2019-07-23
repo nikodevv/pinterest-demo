@@ -22,7 +22,7 @@ describe('modals reducer', () => {
   test('receiving a finishLogin action without a username field sets state.showRegisterModal to false', () => {
     const state = {...initialState, showRegisterModal: true };
     const action = authActionCreators.finishLogin({username: 'ausename'});
-    const newState = modals(initialState, action);
+    const newState = modals(state, action);
     expect(newState.showRegisterModal).toEqual(false);
-  })
+  });
 });

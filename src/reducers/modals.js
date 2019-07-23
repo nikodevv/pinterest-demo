@@ -13,7 +13,7 @@ export const modals = (state = initialState, action ) => {
       if (action.username === null) {
         return {...initialState, showRegisterModal: true};
       }
-      return {...state };
+      return {...state, showRegisterModal: false };
     default:
       return {...state }
   }

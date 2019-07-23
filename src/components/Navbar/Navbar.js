@@ -5,7 +5,7 @@ import './Navbar.css';
 import { FaSearch } from 'react-icons/fa';
 
 import { firebaseAuth } from "../../utility/firebaseFascade";
-import {authActionCreators, modalActionCreators} from "../../actions";
+import {authActionCreators} from "../../actions";
 
 export const helpers = {
   login: async (dispatch) => {
@@ -16,9 +16,6 @@ export const helpers = {
     dispatch(loginAction);
     const userModel = await firebaseAuth.fetchOwnUserModel();
     const storeUsernameAction = authActionCreators.finishLogin(userModel);
-    if (userModel.username === null){
-      dispatch(modalActionCreators.toggleRegisterModal())
-    }
     dispatch(storeUsernameAction);
   },
   signOut: async (dispatch) => {
@@ -35,7 +32,7 @@ export const NavbarComponent = () => {
   return  <div className="container navbar">
     <div className="searchBar">
       <FaSearch className="searchBarIcon" size={'1.5rem'} color='#777'/>
-      <input className="search" placeholder='username'/>
+      <input className="search" placeholder='username (ex: nikodevv)'/>
     </div>
 
 
