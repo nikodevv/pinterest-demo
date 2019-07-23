@@ -43,6 +43,7 @@ describe('<UserPage />', () => {
   test('fetch helper calls API with correct username', async ()=>{
     const uid = 'someRandomUid1235';
     expect(FirestoreData.fetchUserPosts).toBeCalledTimes(0);
+    
     await helpers.fetchData(uid, jest.fn());
     expect(FirestoreData.fetchUserPosts).toBeCalledTimes(1);
     expect(FirestoreData.fetchUserPosts).toBeCalledWith(uid);
