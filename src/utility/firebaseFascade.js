@@ -41,6 +41,20 @@ export class firebaseAuth {
   static addPost = (post) => {
     const uid = firebase.auth().currentUser.uid;
     return UsersRef().doc(uid).collection('posts').add(post);
-  }
+  };
 
+  static fetchUserPosts = async (uid) => {
+    const query = await UsersRef().doc(uid).collection('posts').get();
+    if (query.empty === true){
+      return []
+    }
+    const posts = [];
+    query.forEach(doc=> {
+      posts.push({
+        id: doc.id,
+        ...doc.data()
+      })
+    });
+    return posts
+  };
 }

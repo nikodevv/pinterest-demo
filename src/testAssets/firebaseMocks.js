@@ -6,15 +6,16 @@ export const usersFixtureData = {
           testUserId: {
             age: 15,
             username: 'testUser1',
-            // __collection__: {
-            //   friends: {
-            //     __doc__: {
-            //       user_b: {
-            //         reference: '__ref__:users/user_b'
-            //       }
-            //     }
-            //   }
-            // }
+            __collection__: {
+              posts: {
+                __doc__: {
+                  postWithId1: {
+                    linkUrl: 'pathToLinkUrl',
+                    imgUrl: 'pathToImgUrl',
+                  }
+                }
+              }
+            }
           },
           testUserId2: {
             //no username
