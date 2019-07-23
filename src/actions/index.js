@@ -7,7 +7,6 @@ export const authActions = {
 
 export const modalActions = {
   TOGGLE_NEW_LINK_VIEW: "TOGGLE_NEW_LINK_VIEW",
-  TOGGLE_REGISTER_MODAL: "TOGGLE_REGISTER_MODAL",
 };
 
 export const authActionCreators = {
@@ -41,7 +40,4 @@ export const modalActionCreators = {
   toggleNewLinkModal: () => ({
     type: modalActions.TOGGLE_NEW_LINK_VIEW
   }),
-  toggleRegisterModal: () => ({
-    type: modalActions.TOGGLE_REGISTER_MODAL
-  })
 };

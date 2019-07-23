@@ -111,11 +111,4 @@ describe('<Register />', () => {
     expect(event.preventDefault).toBeCalledTimes(1);
   });
 
-  test('on successful username set, calls dispatch with toggleRegisterModal action', async ()=>{
-    firebaseAuth.setUsername.mockImplementation(()=> new Promise(resolve=>resolve())) ;
-    firebaseAuth.findUsersWithUsername.mockImplementation(()=> new Promise(resolve=>resolve([{username:undefined}])));
-    const mockDispatch =jest.fn();
-    await helpers.handleSubmit('AnyUsernameWillWork', mockDispatch, event);
-    expect(mockDispatch).toBeCalledWith(modalActionCreators.toggleRegisterModal());
-  })
 });

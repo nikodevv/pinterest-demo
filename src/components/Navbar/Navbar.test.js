@@ -141,12 +141,6 @@ describe('Navbar helpers', ()=>{
     expect(dispatcherPlaceholder).toBeCalledWith(authActionCreators.finishLogin(model));
   });
 
-  test('if user has no username, dispatches a show register modal', async () => {
-    firebaseAuth.fetchOwnUserModel = jest.fn(()=>new Promise(resolve=>resolve({username: undefined})));
-    await helpers.login(dispatcherPlaceholder);
-    expect(dispatcherPlaceholder).toBeCalledWith(modalActionCreators.toggleRegisterModal());
-  });
-
   test('signout calls signout bind of firebaseFascade', async () => {
     firebaseAuth.signOut = jest.fn();
     expect(firebaseAuth.signOut).toBeCalledTimes(0);

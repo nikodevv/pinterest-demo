@@ -2,7 +2,7 @@ import React from 'react';
 import {useDispatch} from "react-redux";
 import './Register.css'
 import {firebaseAuth} from "../../utility/firebaseFascade";
-import {authActionCreators, modalActionCreators} from "../../actions";
+import {authActionCreators} from "../../actions";
 
 
 export const helpers = {
@@ -16,7 +16,6 @@ export const helpers = {
       return alert('That username is already taken');
     }
     await firebaseAuth.setUsername(username);
-    dispatch(modalActionCreators.toggleRegisterModal());
     dispatch(authActionCreators.finishLogin({username}))
   }
 };

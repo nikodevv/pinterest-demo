@@ -43,9 +43,4 @@ describe('modalActions', ()=>{
   test('toggleNewLink action creator creates action with type TOGGLE_NEW_LINK_VIEW', ()=>{
     expect(modalActionCreators.toggleNewLinkModal()).toEqual({type: modalActions.TOGGLE_NEW_LINK_VIEW});
   });
-
-  test('toggle register action creator creates action with type TOGGLE_REGISTER_MODAL', ()=>{
-    expect(modalActionCreators.toggleRegisterModal()).toEqual({type: modalActions.TOGGLE_REGISTER_MODAL});
-  })
-
 });
