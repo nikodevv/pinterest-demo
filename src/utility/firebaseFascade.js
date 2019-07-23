@@ -36,6 +36,14 @@ export class firebaseAuth {
   static setUsername = (username) => {
     const uid = firebase.auth().currentUser.uid;
     return UsersRef().doc(uid).set({username}, {merge: true});
+  };
+
+  static addPost = (imgUrl, linkUrl) => {
+    const uid = firebase.auth().currentUser.uid;
+    return UsersRef().doc(uid).collection('posts').add({
+      imgUrl,
+      linkUrl
+    });
   }
 
 }
