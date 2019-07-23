@@ -1,7 +1,7 @@
 import React from 'react';
 import {useDispatch} from "react-redux";
 import './Register.css'
-import {firebaseAuth} from "../../utility/firebaseFascade";
+import {FirestoreData} from "../../utility/firebaseFascade";
 import {authActionCreators} from "../../actions";
 
 
@@ -11,11 +11,11 @@ export const helpers = {
   },
   handleSubmit: async (username, dispatch, event) => {
     event.preventDefault();
-    const users = await firebaseAuth.findUsersWithUsername(username);
+    const users = await FirestoreData.findUsersWithUsername(username);
     if (users.filter(userObj=>userObj.username === username).length >= 1){
       return alert('That username is already taken');
     }
-    await firebaseAuth.setUsername(username);
+    await FirestoreData.setUsername(username);
     dispatch(authActionCreators.finishLogin({username}))
   }
 };

@@ -2,12 +2,12 @@ import React from 'react';
 import configureMockStore from 'redux-mock-store';
 import Adapter from "enzyme-adapter-react-16/build";
 import {configure, mount, shallow} from 'enzyme';
+import * as firebase from "firebase";
 import Navbar, {helpers} from './Navbar';
 import {Provider} from "react-redux";
-import {firebaseAuth} from "../../utility/firebaseFascade";
-import {authActionCreators, authActions, modalActionCreators} from "../../actions";
+import {FirebaseAuth, FirestoreData} from "../../utility/firebaseFascade";
+import {authActionCreators, authActions} from "../../actions";
 import {mockAuthBuilder} from "../../testAssets/firebaseMocks";
-import * as firebase from "firebase";
 configure({adapter: new Adapter()});
 
 const mockStore = configureMockStore();
@@ -22,7 +22,7 @@ describe('<Navbar />', () => {
   };
 
   beforeEach(()=>{
-    firebaseAuth.loginWithGithub = () => new Promise(resolve=>resolve()); // disables outbound call
+    FirestoreData.loginWithGithub = () => new Promise(resolve=>resolve()); // disables outbound call
   });
 
   afterEach(() => {
@@ -92,7 +92,7 @@ describe('Navbar helpers', ()=>{
   let dispatcherPlaceholder = () => null;
 
   beforeEach(()=>{
-    firebaseAuth.loginWithGithub = () => new Promise(resolve=>resolve()); // disables outbound call
+    FirestoreData.loginWithGithub = () => new Promise(resolve=>resolve()); // disables outbound call
     firebase.auth = mockAuthBuilder();
   });
 
@@ -101,11 +101,11 @@ describe('Navbar helpers', ()=>{
   });
 
   test('login function calls firebase wrapper for sign in withpopup', ()=>{
-    firebaseAuth.loginWithGithub = jest.fn();
-    firebaseAuth.loginWithGithub.mockReturnValue(new Promise(resolve => resolve()));
-    expect(firebaseAuth.loginWithGithub).toBeCalledTimes(0);
+    FirebaseAuth.loginWithGithub = jest.fn();
+    FirebaseAuth.loginWithGithub.mockReturnValue(new Promise(resolve => resolve()));
+    expect(FirebaseAuth.loginWithGithub).toBeCalledTimes(0);
     helpers.login(dispatcherPlaceholder);
-    expect(firebaseAuth.loginWithGithub).toBeCalledTimes(1);
+    expect(FirebaseAuth.loginWithGithub).toBeCalledTimes(1);
   });
 
   test('login function calls dispatch 3 times', async ()=>{
@@ -128,28 +128,28 @@ describe('Navbar helpers', ()=>{
   });
 
   test('login function fetches user data', async () => {
-    firebaseAuth.fetchOwnUserModel = jest.fn(()=>new Promise(resolve=>resolve({username: 'myusername'})));
-    expect(firebaseAuth.fetchOwnUserModel).toBeCalledTimes(0);
+    FirestoreData.fetchOwnUserModel = jest.fn(()=>new Promise(resolve=>resolve({username: 'myusername'})));
+    expect(FirestoreData.fetchOwnUserModel).toBeCalledTimes(0);
     await helpers.login(dispatcherPlaceholder);
-    expect(firebaseAuth.fetchOwnUserModel).toBeCalledTimes(1);
+    expect(FirestoreData.fetchOwnUserModel).toBeCalledTimes(1);
   });
 
   test('dispatches an update username action', async () => {
     const model = {username: 'myusername'}
-    firebaseAuth.fetchOwnUserModel = jest.fn(()=>new Promise(resolve=>resolve({username: model})));
+    FirestoreData.fetchOwnUserModel = jest.fn(()=>new Promise(resolve=>resolve({username: model})));
     await helpers.login(dispatcherPlaceholder);
     expect(dispatcherPlaceholder).toBeCalledWith(authActionCreators.finishLogin(model));
   });
 
   test('signout calls signout bind of firebaseFascade', async () => {
-    firebaseAuth.signOut = jest.fn();
-    expect(firebaseAuth.signOut).toBeCalledTimes(0);
+    FirebaseAuth.signOut = jest.fn();
+    expect(FirebaseAuth.signOut).toBeCalledTimes(0);
     await helpers.signOut(dispatcherPlaceholder);
-    expect(firebaseAuth.signOut).toBeCalledTimes(1);
+    expect(FirebaseAuth.signOut).toBeCalledTimes(1);
   });
 
   test('signout dispatches signout action', async () => {
-    firebaseAuth.signOut = jest.fn();
+    FirebaseAuth.signOut = jest.fn();
     dispatcherPlaceholder = jest.fn();
     expect(dispatcherPlaceholder).toBeCalledTimes(0);
     await helpers.signOut(dispatcherPlaceholder);

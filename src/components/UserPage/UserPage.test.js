@@ -6,9 +6,17 @@ import UserPage from './UserPage';
 configure({adapter: new Adapter()});
 
 describe('<UserPage />', () => {
-  let urlParam = { params: {userId: 'testUserId1'}};
+  let urlParam = { params: {userId: 'testUserId1'}}; // matches fixtureData
+
+  beforeEach(()=>{
+  });
+
   test('renders', () => {
     const wrapper = shallow(<UserPage match={urlParam}/>);
     expect(wrapper).toMatchSnapshot();
+  });
+
+  test('Saves posts to state', () => {
+
   });
 });

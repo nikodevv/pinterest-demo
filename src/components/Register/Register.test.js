@@ -4,7 +4,7 @@ import configureMockStore from 'redux-mock-store';
 import Adapter from "enzyme-adapter-react-16/build";
 import {Provider} from "react-redux";
 import Register, {helpers} from './Register';
-import {firebaseAuth} from "../../utility/firebaseFascade";
+import {FirestoreData} from "../../utility/firebaseFascade";
 import {authActionCreators} from "../../actions";
 
 const mockStore = configureMockStore();
@@ -24,8 +24,8 @@ describe('<Register />', () => {
         username: 'validUsername',
       }
     };
-    firebaseAuth.findUsersWithUsername = jest.fn(()=>[]);
-    firebaseAuth.setUsername = jest.fn();
+    FirestoreData.findUsersWithUsername = jest.fn(()=>[]);
+    FirestoreData.setUsername = jest.fn();
     window.alert = jest.fn();
   });
 
@@ -74,19 +74,19 @@ describe('<Register />', () => {
   });
 
   test('submit form handler calls firebase Fascade endpoint to check if username exists', ()=> {
-    expect(firebaseAuth.findUsersWithUsername).toBeCalledTimes(0);
+    expect(FirestoreData.findUsersWithUsername).toBeCalledTimes(0);
     helpers.handleSubmit('username', jest.fn(), event);
-    expect(firebaseAuth.findUsersWithUsername).toBeCalledTimes(1);
+    expect(FirestoreData.findUsersWithUsername).toBeCalledTimes(1);
   });
 
   test('submit form handler returns alert if username exists in database, does not call setUsername', async () => {
     const username = 'myusername'; // A username that is not in database
-    firebaseAuth.findUsersWithUsername.mockImplementation(()=>([{username}]));
+    FirestoreData.findUsersWithUsername.mockImplementation(()=>([{username}]));
 
     expect(window.alert).toBeCalledTimes(0);
     await helpers.handleSubmit(username, jest.fn(), event);
     expect(window.alert).toBeCalledTimes(1);
-    expect(firebaseAuth.setUsername).toBeCalledTimes(0);
+    expect(FirestoreData.setUsername).toBeCalledTimes(0);
   });
 
   test('submit form handler calls set username in fascade if username is not taken', async ()=>{
@@ -95,18 +95,18 @@ describe('<Register />', () => {
     expect(window.alert).toBeCalledTimes(0);
     await helpers.handleSubmit(username, jest.fn(), event);
     expect(window.alert).toBeCalledTimes(0);
-    expect(firebaseAuth.setUsername).toBeCalledTimes(1);
-    expect(firebaseAuth.setUsername).toBeCalledWith(username);
+    expect(FirestoreData.setUsername).toBeCalledTimes(1);
+    expect(FirestoreData.setUsername).toBeCalledWith(username);
   });
 
   test('if form handler setusername promise is resolved, calls dispatch with finish login action', async ()=> {
     const username = 'myusername';
     const mockDispatch = jest.fn();
 
-    expect(firebaseAuth.setUsername).toBeCalledTimes(0);
+    expect(FirestoreData.setUsername).toBeCalledTimes(0);
     expect(mockDispatch).toBeCalledTimes(0);
     await helpers.handleSubmit(username, mockDispatch, event);
-    expect(firebaseAuth.setUsername).toBeCalledTimes(1);
+    expect(FirestoreData.setUsername).toBeCalledTimes(1);
     expect(mockDispatch).toBeCalledWith(authActionCreators.finishLogin({username}));
   });
 
