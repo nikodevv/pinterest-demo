@@ -1,6 +1,7 @@
 import React from 'react';
 import * as redux from "react-redux";
 import {Register} from "../Register/Register";
+import NewLink from "../NewLink";
 
 
 const ModalsLauncher = () => {
@@ -11,7 +12,7 @@ const ModalsLauncher = () => {
     return <Register/>
   }
   else if (modals.showNewLinkModal === true) {
-    return <div className="screenOverlay">ModalsLauncher</div>
+    return <NewLink/>
   }
   return null;
 };
