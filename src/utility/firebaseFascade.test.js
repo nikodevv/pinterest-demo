@@ -84,7 +84,7 @@ describe('Prompts user to login with firebase', () => {
 
         let postsSnapshot = await firebaseLocations.UsersRef().doc(uid).collection('posts').get();
         expect(postsSnapshot.empty).toEqual(true);
-        await firebaseAuth.addPost(imgUrl, linkUrl);
+        await firebaseAuth.addPost({imgUrl, linkUrl});
         postsSnapshot = await firebaseLocations.UsersRef().doc(uid).collection('posts').get();
         expect(postsSnapshot.empty).toEqual(false);
         postsSnapshot.forEach(doc=>{
