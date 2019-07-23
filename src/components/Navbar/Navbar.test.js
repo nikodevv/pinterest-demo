@@ -5,7 +5,7 @@ import {configure, mount, shallow} from 'enzyme';
 import Navbar, {helpers} from './Navbar';
 import {Provider} from "react-redux";
 import {firebaseAuth} from "../../utility/firebaseFascade";
-import {authActionCreators, authActions} from "../../actions";
+import {authActionCreators, authActions, modalActionCreators} from "../../actions";
 import {mockAuthBuilder} from "../../testAssets/firebaseMocks";
 import * as firebase from "firebase";
 configure({adapter: new Adapter()});
@@ -139,6 +139,12 @@ describe('Navbar helpers', ()=>{
     firebaseAuth.fetchOwnUserModel = jest.fn(()=>new Promise(resolve=>resolve({username: model})));
     await helpers.login(dispatcherPlaceholder);
     expect(dispatcherPlaceholder).toBeCalledWith(authActionCreators.finishLogin(model));
+  });
+
+  test('if user has no username, dispatches a show register modal', async () => {
+    firebaseAuth.fetchOwnUserModel = jest.fn(()=>new Promise(resolve=>resolve({username: undefined})));
+    await helpers.login(dispatcherPlaceholder);
+    expect(dispatcherPlaceholder).toBeCalledWith(modalActionCreators.toggleRegisterModal());
   });
 
   test('signout calls signout bind of firebaseFascade', async () => {

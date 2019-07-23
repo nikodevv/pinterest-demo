@@ -1,8 +1,8 @@
 import React from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import './Register.css'
 import {firebaseAuth} from "../../utility/firebaseFascade";
-import {authActionCreators} from "../../actions";
+import {authActionCreators, modalActionCreators} from "../../actions";
 
 
 export const helpers = {
@@ -16,21 +16,14 @@ export const helpers = {
       return alert('That username is already taken');
     }
     await firebaseAuth.setUsername(username);
+    dispatch(modalActionCreators.toggleRegisterModal());
     dispatch(authActionCreators.finishLogin({username}))
   }
 };
 
 export const Register = () => {
-  const auth = useSelector( state => state.auth);
   const [username, setUsername] = React.useState("");
   const dispatch = useDispatch();
-
-  if (auth.loggedIn === false){
-    return null;
-  }
-  if (auth.username !== null || auth.loading === true) {
-    return null;
-  }
 
   return (
     <div className='screenOverlay'>

@@ -6,6 +6,7 @@ import {Provider} from "react-redux";
 import Register, {helpers} from './Register';
 import {firebaseAuth} from "../../utility/firebaseFascade";
 import {App} from '../../App';
+import {authActionCreators, modalActionCreators} from "../../actions";
 
 configure({adapter: new Adapter()});
 const mockStore = configureMockStore();
@@ -38,32 +39,6 @@ describe('<Register />', () => {
         <Register/>
       </Provider>);
     expect(wrapper).toMatchSnapshot();
-  });
-
-  test('renders null if auth is loading', () => {
-    initialStoreData.auth.loading = true;
-    const wrapper = mount(
-      <Provider store={mockStore(initialStoreData)}>
-        <Register/>
-      </Provider>);
-    expect(wrapper.find('div').isEmpty()).toEqual(true);
-  });
-
-  test('renders null if username is not null and loggedIn is true', () => {
-    const wrapper = mount(
-      <Provider store={mockStore(initialStoreData)}>
-        <Register/>
-      </Provider>);
-    expect(wrapper.find('div').isEmpty()).toEqual(true);
-  });
-
-  test('renders registration form if username is null and logged in is true', () => {
-    initialStoreData.auth.username = null;
-    const wrapper = mount(
-      <Provider store={mockStore(initialStoreData)}>
-        <Register/>
-      </Provider>);
-    expect(wrapper.find('form').isEmpty()).toEqual(false);
   });
 
   test('alphanumeric filter strips out non alphanumeric chars', () => {
@@ -118,14 +93,14 @@ describe('<Register />', () => {
     expect(firebaseAuth.setUsername).toBeCalledWith(username);
   });
 
-  test('if form handler setusername promise is resolved, calls dispatch', async ()=> {
+  test('if form handler setusername promise is resolved, calls dispatch with finish login action', async ()=> {
     const username = 'myusername';
     const mockDispatch = jest.fn();
     expect(firebaseAuth.setUsername).toBeCalledTimes(0);
     expect(mockDispatch).toBeCalledTimes(0);
     await helpers.handleSubmit(username, mockDispatch, event);
     expect(firebaseAuth.setUsername).toBeCalledTimes(1);
-    expect(mockDispatch).toBeCalledTimes(1);
+    expect(mockDispatch).toBeCalledWith(authActionCreators.finishLogin({username}));
   });
 
   test('form handler stop propagation', async () => {
@@ -134,5 +109,13 @@ describe('<Register />', () => {
     expect(event.preventDefault).toBeCalledTimes(0);
     await helpers.handleSubmit(username, jest.fn(), event);
     expect(event.preventDefault).toBeCalledTimes(1);
+  });
+
+  test('on successful username set, calls dispatch with toggleRegisterModal action', async ()=>{
+    firebaseAuth.setUsername.mockImplementation(()=> new Promise(resolve=>resolve())) ;
+    firebaseAuth.findUsersWithUsername.mockImplementation(()=> new Promise(resolve=>resolve([{username:undefined}])));
+    const mockDispatch =jest.fn();
+    await helpers.handleSubmit('AnyUsernameWillWork', mockDispatch, event);
+    expect(mockDispatch).toBeCalledWith(modalActionCreators.toggleRegisterModal());
   })
 });
