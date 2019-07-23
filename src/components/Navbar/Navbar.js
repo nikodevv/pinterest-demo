@@ -32,7 +32,7 @@ export const NavbarComponent = () => {
   return  <div className="container navbar">
     <div className="searchBar">
       <FaSearch className="searchBarIcon" size={'1.5rem'} color='#777'/>
-      <input className="search" placeholder='username'/>
+      <input className="search" placeholder='username (ex: nikodevv)'/>
     </div>
 
 

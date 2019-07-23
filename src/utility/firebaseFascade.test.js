@@ -75,5 +75,20 @@ describe('Prompts user to login with firebase', () => {
         await firebaseAuth.setUsername(username);
         snapshot = await firebaseLocations.UsersRef().doc(uid).get();
         expect(snapshot.data().username).toEqual(username);
+    });
+
+    test('addPost adds posts to firestore', async ()=>{
+        const linkUrl = "linkToDestinationUrl";
+        const imgUrl = "imgUrl";
+        const uid = firebase.auth().currentUser.uid
+
+        let postsSnapshot = await firebaseLocations.UsersRef().doc(uid).collection('posts').get();
+        expect(postsSnapshot.empty).toEqual(true);
+        await firebaseAuth.addPost({imgUrl, linkUrl});
+        postsSnapshot = await firebaseLocations.UsersRef().doc(uid).collection('posts').get();
+        expect(postsSnapshot.empty).toEqual(false);
+        postsSnapshot.forEach(doc=>{
+            expect(doc.data()).toEqual({linkUrl, imgUrl})
+        })
     })
 });

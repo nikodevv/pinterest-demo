@@ -1,5 +1,5 @@
 import React from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import './Register.css'
 import {firebaseAuth} from "../../utility/firebaseFascade";
 import {authActionCreators} from "../../actions";
@@ -21,16 +21,8 @@ export const helpers = {
 };
 
 export const Register = () => {
-  const auth = useSelector( state => state.auth);
   const [username, setUsername] = React.useState("");
   const dispatch = useDispatch();
-
-  if (auth.loggedIn === false){
-    return null;
-  }
-  if (auth.username !== null || auth.loading === true) {
-    return null;
-  }
 
   return (
     <div className='screenOverlay'>

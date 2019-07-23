@@ -5,10 +5,11 @@ import {configure, mount, shallow} from 'enzyme';
 import Navbar, {helpers} from './Navbar';
 import {Provider} from "react-redux";
 import {firebaseAuth} from "../../utility/firebaseFascade";
-import {authActionCreators, authActions} from "../../actions";
+import {authActionCreators, authActions, modalActionCreators} from "../../actions";
 import {mockAuthBuilder} from "../../testAssets/firebaseMocks";
 import * as firebase from "firebase";
 configure({adapter: new Adapter()});
+
 const mockStore = configureMockStore();
 
 describe('<Navbar />', () => {

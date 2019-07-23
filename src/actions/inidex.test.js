@@ -1,4 +1,4 @@
-import { authActions } from "./index";
+import {authActions, modalActionCreators, modalActions} from "./index";
 import { authActionCreators } from "./index";
 
 describe('Auth actions', () => {
@@ -37,5 +37,10 @@ describe('Auth actions', () => {
   test('signout creator returns action with signout type', () => {
     expect(authActionCreators.signOut().type).toEqual(authActions.SIGN_OUT);
   });
+});
 
+describe('modalActions', ()=>{
+  test('toggleNewLink action creator creates action with type TOGGLE_NEW_LINK_VIEW', ()=>{
+    expect(modalActionCreators.toggleNewLinkModal()).toEqual({type: modalActions.TOGGLE_NEW_LINK_VIEW});
+  });
 });

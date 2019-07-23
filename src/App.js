@@ -9,7 +9,8 @@ import './App.css';
 import firebaseConfig from './config/firebaseConfig';
 import Router from "./components/Router";
 import rootReducer from './reducers'
-import Register from "./components/Register/Register";
+import UserButtons from "./components/UserButtons";
+import ModalsLauncher from "./components/ModalsLauncher";
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 export const db = firebase.firestore(firebaseApp);
@@ -23,7 +24,8 @@ export const App = () => {
   return (
       <Provider store={store}>
         <div className="App">
-          <Register/>
+          <ModalsLauncher/>
+          <UserButtons/>
           <Router/>
         </div>
       </Provider>
