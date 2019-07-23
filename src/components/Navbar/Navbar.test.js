@@ -9,6 +9,7 @@ import {authActionCreators, authActions} from "../../actions";
 import {mockAuthBuilder} from "../../testAssets/firebaseMocks";
 import * as firebase from "firebase";
 configure({adapter: new Adapter()});
+
 const mockStore = configureMockStore();
 
 describe('<Navbar />', () => {

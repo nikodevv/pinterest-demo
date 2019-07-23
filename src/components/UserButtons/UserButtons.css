@@ -5,3 +5,9 @@
   display: flex;
   flex-direction: column;
 }
+
+.actionIcon {
+  border-radius: 2rem;
+  margin-bottom: 0.25rem;
+  box-shadow: 0 0.15rem 0.3rem 0 #553;
+}
