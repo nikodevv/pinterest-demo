@@ -36,10 +36,10 @@ const NewLink = () => {
       </div>
       <div className="center container-row">
         <button disabled={(!linkUrl || !imgUrl)}
-                onClick={(e)=>{{
+                onClick={(e)=>{
                   e.preventDefault();
                   helpers.saveLink(imgUrl, linkUrl, dispatch)
-                }}}>
+                }}>
           Save
         </button>
       </div>
