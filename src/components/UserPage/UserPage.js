@@ -1,19 +1,20 @@
 import React from 'react';
-import {firebaseAuth} from "../../utility/firebaseFascade";
+import {FirestoreData} from "../../utility/firebaseFascade";
+
+export const helpers = {
+  fetchData: async (userId, setPosts) => {
+    const userPosts = await FirestoreData.fetchUserPosts(userId);
+    setPosts(userPosts);
+  }
+};
 
 const UserPage = (props) => {
   const {userId} = props.match.params;
   const [posts, setPosts] = React.useState([]);
 
   React.useEffect(()=>{
-    const fetchData = async () => {
-      const userPosts = await firebaseAuth.fetchUserPosts(userId);
-      setPosts(userPosts);
-    };
-
-    fetchData();
+    helpers.fetchData(userId, setPosts);
   }, [userId]);
-  console.log(posts);
   return <div>UserPage</div>;
 };
 
