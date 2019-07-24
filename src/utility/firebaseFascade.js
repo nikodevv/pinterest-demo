@@ -19,9 +19,13 @@ export class FirestoreData {
   };
 
   static findUsersWithUsername = async (queryStr) => {
-    const query = await UsersRef().where('username','>=', queryStr);
+    const strFrontCode = queryStr.slice(0, queryStr.length-1);
+    const strEndCode = queryStr.slice(queryStr.length-1, queryStr.length);
+    const endcode = strFrontCode + String.fromCharCode(strEndCode.charCodeAt(0) + 1);
+    const query = await UsersRef().where('username','>=', queryStr).where('username',"<", endcode);
     const snapshot = await query.get();
     const userModels = [];
+
     snapshot.forEach(doc => {
       const userObj = {...doc.data(), id: doc.id };
       userModels.push(userObj)
@@ -62,5 +66,5 @@ export class FirestoreData {
 
   static deletePost = (uid, itemId) => {
     return UsersRef().doc(uid).collection('posts').doc(itemId).delete();
-  }
+  };
 }

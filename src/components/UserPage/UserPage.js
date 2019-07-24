@@ -50,7 +50,7 @@ const UserPage = (props) => {
       helpers.fetchData(userId, setPosts);
       setNeedsToReload(false)
     }
-  }, [needsToReload]);
+  }, [needsToReload, userId]);
 
   React.useEffect(()=>{
     window.addEventListener('scroll', handleScrollListener);
