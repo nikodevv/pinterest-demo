@@ -1,10 +1,14 @@
 /* Navbar styles */
 div.navbar {
+    position:fixed;
+    width: 100%;
+    top: 0;
+    background-color: white;
     display: flex;
     flex-direction: row;
-    margin: 0.5rem 5rem 0 5rem;
-    background-color: transparent;
+    /*background-color: transparent;*/
     text-align: left;
+    z-index: 1000;
     justify-content: space-between;
 }
 
@@ -29,7 +33,7 @@ div.navbar span {
 
     width: 60%;
     height: inherit;
-    margin: 0.5rem;
+    margin: 0.5rem 0.5rem 0.1rem 5rem;
     border-radius: 0.4rem;
     box-shadow: 0 0 0 0.1rem #9d9d9d;
     background-color: #efefef; /* Matching Pinterest */
@@ -57,3 +61,10 @@ input.search {
     outline: 0;
 }
 
+.navBarTextItem:hover {
+    cursor: default;
+}
+
+.transparentContainer {
+    background-color: transparent;
+}

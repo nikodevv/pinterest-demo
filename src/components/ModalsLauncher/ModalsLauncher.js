@@ -2,6 +2,7 @@ import React from 'react';
 import * as redux from "react-redux";
 import {Register} from "../Register/Register";
 import NewLink from "../NewLink";
+import CopyLink from "../CopyLink";
 
 
 const ModalsLauncher = () => {
@@ -13,6 +14,9 @@ const ModalsLauncher = () => {
   }
   else if (modals.showNewLinkModal === true) {
     return <NewLink/>
+  }
+  else if (modals.showShortLinkModal === true){
+    return <CopyLink link={modals.shortLink}/>
   }
   return null;
 };

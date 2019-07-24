@@ -1,9 +1,13 @@
 import React from 'react';
 import {configure, mount, shallow} from 'enzyme';
+import configureMockStore from 'redux-mock-store';
 import Adapter from "enzyme-adapter-react-16/build";
 import UserPage, {helpers} from './UserPage';
 import {FirestoreData} from "../../utility/firebaseFascade";
+import {Provider} from "react-redux";
+import {initialState} from "../../reducers/auth";
 
+const mockStore = configureMockStore();
 configure({adapter: new Adapter()});
 
 describe('<UserPage />', () => {
@@ -25,7 +29,10 @@ describe('<UserPage />', () => {
 
 
   test('renders', () => {
-    const wrapper = shallow(<UserPage match={urlParam}/>);
+    const wrapper = shallow(
+      <Provider store={mockStore()}>
+        <UserPage match={urlParam}/>
+      </Provider>);
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -36,7 +43,10 @@ describe('<UserPage />', () => {
     jest.spyOn(helpers, 'fetchData').mockImplementation(fetchMock);
     jest.spyOn(React,'useState').mockImplementation(jest.fn((initial) => [initial, setPostsMock]));
 
-    const wrapper = mount(<UserPage match={urlParam}/>);
+    const wrapper = mount(
+      <Provider store={mockStore({auth: initialState})}>
+        <UserPage match={urlParam}/>
+      </Provider>);
     expect(helpers.fetchData).toBeCalledWith(urlParam.params.userId, setPostsMock);
   });
 

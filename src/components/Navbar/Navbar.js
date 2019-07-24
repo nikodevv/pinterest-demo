@@ -26,13 +26,23 @@ export const helpers = {
 
 export const NavbarComponent = () => {
   const auth = useSelector( state => state.auth );
+  const [suggestions, setSuggestions] = React.useState([]);
   const dispatch = useDispatch();
   const { loggedIn, username} = auth;
 
-  return  <div className="container navbar">
+  return  <div className="transparentContainer">
+    <div className="container navbar">
+      { suggestions.length >= 1 &&
+        suggestions
+      }
     <div className="searchBar">
       <FaSearch className="searchBarIcon" size={'1.5rem'} color='#777'/>
-      <input className="search" placeholder='username (ex: nikodevv)'/>
+      <input className="search" placeholder='username (ex: nikodevv)' onChange={async (val)=>{
+        const response = await FirestoreData.findUsersWithUsername(val.target.value);
+        console.log(response)
+        // setSuggestions(response)
+      }
+      }/>
     </div>
 
 
@@ -51,7 +61,7 @@ export const NavbarComponent = () => {
       </div>
     }
     </div>
-
+  </div>
 };
 
 export default NavbarComponent;

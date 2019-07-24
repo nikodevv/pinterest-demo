@@ -26,4 +26,5 @@ yarn-error.log*
 .firebase/
 .idea/workspace.xml
 .idea/
+src/config/rebrandlyConfig.js
 

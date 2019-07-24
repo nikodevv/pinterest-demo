@@ -7,6 +7,7 @@ export const authActions = {
 
 export const modalActions = {
   TOGGLE_NEW_LINK_VIEW: "TOGGLE_NEW_LINK_VIEW",
+  TOGGLE_SHORT_LINK_MODAL: "TOGGLE_SHORT_LINK_MODAL"
 };
 
 export const authActionCreators = {
@@ -40,4 +41,8 @@ export const modalActionCreators = {
   toggleNewLinkModal: () => ({
     type: modalActions.TOGGLE_NEW_LINK_VIEW
   }),
+  toggleShortLinkModal: (link=null) => ({
+    type: modalActions.TOGGLE_SHORT_LINK_MODAL,
+    link
+  })
 };
