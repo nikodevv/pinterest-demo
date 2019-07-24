@@ -27,9 +27,10 @@ thoroughly demonstrated my ability to write tests, I stopped writing them
 so that I can finish the project a bit faster.
 
 ## Demo
-You can checkout `https://pinterest-clone-eb176.firebaseapp.com/` and 
+The web app is deployed to `https://pinterest-clone-eb176.firebaseapp.com/`.
+
+Here is a link to my user profile: 
 `https://pinterest-clone-eb176.firebaseapp.com/userPage/ZzTZChAFRnf4GhdEyNLX6hWwq5w1` 
-for a demo.
 
 All of the requested user stories have been completed. I haven't tested / developed for 
 every screen size, so here is a screenshot of the web app on my machine `https://imgur.com/a/GzRC3ic`,
