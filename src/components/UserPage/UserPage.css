@@ -4,12 +4,16 @@
   margin: 2rem 10rem 0 10rem;
 }
 
-img{
+img {
   margin-top: 0.25rem;
   margin-left: 0.25rem;
   width: 22rem;
   box-shadow: 0 0 0 0.1rem #333;
   border-radius: 0.75rem;
+}
+
+img:hover {
+  box-shadow: 0 0 0 0.25rem #91b9ff;
 }
 
 .deleteIconContainer {
@@ -22,6 +26,12 @@ img{
 }
 
 .deleteIcon {
-  margin-right: 1.5rem;
+  padding: 0.2rem;
+  margin-right: 1.3rem;
+  border-radius: 0.5rem;
   color: #ca7c77;
+}
+
+.deleteIcon:hover {
+  box-shadow: 0 0 0 0.1rem #91b9ff;
 }

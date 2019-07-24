@@ -39,7 +39,7 @@ const UserPage = (props) => {
 
   return <div className="container-row center">
     <div className="userPage">
-      <Columns columns={3}>
+      <Columns>
         {
           posts.slice(0,Math.min(maxItems,posts.length)).map((post, i) => {
             return(<a key={i} href={post.linkUrl} target={'_blank'}>
