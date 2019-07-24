@@ -1,8 +1,12 @@
 /* Navbar styles */
-div.navbar {
+.transparentContainer {
     position:fixed;
-    width: 100%;
     top: 0;
+    width: 100%;
+    background-color: transparent;
+}
+
+div.navbar {
     background-color: white;
     display: flex;
     flex-direction: row;
@@ -65,6 +69,17 @@ input.search {
     cursor: default;
 }
 
-.transparentContainer {
-    background-color: transparent;
+.suggestionsContainer {
+    width: 60%;
+    margin: 0 0 0 5rem;
+    background-color: #efefef;
+    border-radius: 0rem 0rem 0.75rem 0.75rem;
+    box-shadow: 0 0 0 0.1rem #91b9ff;
+
+}
+.suggestions {
+    padding: 0.5rem 0 0.5rem 2rem;
+}
+.suggestionItem {
+    margin-bottom: 0.1rem;
 }

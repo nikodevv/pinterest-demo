@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { GithubLoginButton } from "react-social-login-buttons";
 import './Navbar.css';
 import { FaSearch } from 'react-icons/fa';
+import _ from 'lodash';
 
 import {FirebaseAuth, FirestoreData} from "../../utility/firebaseFascade";
 import {authActionCreators} from "../../actions";
@@ -21,7 +22,13 @@ export const helpers = {
   signOut: async (dispatch) => {
     await FirebaseAuth.signOut();
     dispatch(authActionCreators.signOut());
+  },
+  findUserNames: async (setSuggestions, val) => {
+    const response = await FirestoreData.findUsersWithUsername(val);
+    setSuggestions(response)
   }
+
+
 };
 
 export const NavbarComponent = () => {
@@ -32,17 +39,11 @@ export const NavbarComponent = () => {
 
   return  <div className="transparentContainer">
     <div className="container navbar">
-      { suggestions.length >= 1 &&
-        suggestions
-      }
     <div className="searchBar">
       <FaSearch className="searchBarIcon" size={'1.5rem'} color='#777'/>
-      <input className="search" placeholder='username (ex: nikodevv)' onChange={async (val)=>{
-        const response = await FirestoreData.findUsersWithUsername(val.target.value);
-        console.log(response)
-        // setSuggestions(response)
-      }
-      }/>
+      <input className="search"
+             placeholder='username (ex: nikodevv)'
+             onChange={(e)=>_.debounce(helpers.findUserNames,250)(setSuggestions, e.target.value)}/>
     </div>
 
 
@@ -61,6 +62,17 @@ export const NavbarComponent = () => {
       </div>
     }
     </div>
+    { suggestions.length >= 1 &&
+      <div className="suggestionsContainer">
+        <div className="container-row suggestions">
+          <div className="suggestionItem">
+            {suggestions.length >= 1 &&
+            suggestions.map(suggestion => suggestion.username)
+            }
+          </div>
+        </div>
+      </div>
+    }
   </div>
 };
 
