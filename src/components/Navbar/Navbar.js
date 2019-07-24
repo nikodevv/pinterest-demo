@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { GithubLoginButton } from "react-social-login-buttons";
 import './Navbar.css';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaNeos } from 'react-icons/fa';
 import _ from 'lodash';
 import { withRouter } from 'react-router';
 
@@ -50,17 +50,20 @@ const Navbar = (props) => {
 
   return  <div className="transparentContainer">
     <div className="container navbar">
-    <div className="searchBar">
-      <FaSearch className="searchBarIcon" size={'1.5rem'} color='#777'/>
-      <form onSubmit={(e)=>helpers.navigateToProfile(suggestions, props.history, e)}>
-        <input className="search"
-               name="search"
-               placeholder='username (ex: nikodevv)'
-               onFocus={()=>setShowSuggestions(true)}
-               onBlur={()=>setShowSuggestions(false)}
-               onChange={(e)=>_.debounce(helpers.findUserNames,250)(setSuggestions, e.target.value)}/>
-      </form>
-    </div>
+      <a href="/" className="logo">
+      <FaNeos size="2rem"/>
+      </a>
+      <div className="searchBar">
+        <FaSearch className="searchBarIcon" size={'1.5rem'} color='#777'/>
+        <form onSubmit={(e)=>helpers.navigateToProfile(suggestions, props.history, e)}>
+          <input className="search"
+                 name="search"
+                 placeholder='username (ex: nikodevv)'
+                 onFocus={()=>setShowSuggestions(true)}
+                 onBlur={()=>setShowSuggestions(false)}
+                 onChange={(e)=>_.debounce(helpers.findUserNames,250)(setSuggestions, e.target.value)}/>
+        </form>
+      </div>
 
 
     {/*Logged out nav bar items*/}

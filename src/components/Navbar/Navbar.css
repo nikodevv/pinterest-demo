@@ -10,7 +10,7 @@ div.navbar {
     background-color: white;
     display: flex;
     flex-direction: row;
-    /*background-color: transparent;*/
+    box-shadow: 0 0 0 0.1rem #9d9d9d;
     text-align: left;
     z-index: 1000;
     justify-content: space-between;
@@ -37,7 +37,7 @@ div.navbar span {
 
     width: 60%;
     height: inherit;
-    margin: 0.5rem 0.5rem 0.1rem 5rem;
+    margin: 0.5rem 0.5rem 0rem 5rem;
     border-radius: 0.4rem;
     box-shadow: 0 0 0 0.1rem #9d9d9d;
     background-color: #efefef; /* Matching Pinterest */
@@ -85,4 +85,11 @@ input.search {
 }
 form {
     width: 90%
+}
+
+.logo {
+    /* I threw this in at the end and I don't want to refactor the navbar styles; In a real project this should not be position:fixed*/
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
 }
