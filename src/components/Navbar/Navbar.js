@@ -4,6 +4,7 @@ import { GithubLoginButton } from "react-social-login-buttons";
 import './Navbar.css';
 import { FaSearch } from 'react-icons/fa';
 import _ from 'lodash';
+import { withRouter } from 'react-router';
 
 import {FirebaseAuth, FirestoreData} from "../../utility/firebaseFascade";
 import {authActionCreators} from "../../actions";
@@ -26,12 +27,21 @@ export const helpers = {
   findUserNames: async (setSuggestions, val) => {
     const response = await FirestoreData.findUsersWithUsername(val);
     setSuggestions(response)
+  },
+  navigateToProfile: (suggestions, history, e) => {
+        e.preventDefault();
+        const data = new FormData(e.target);
+        const username = data.get('search');
+        const matchingUsers = suggestions.filter((user=>user.username===username));
+        if (matchingUsers.length > 0){
+          history.push(`/userPage/${suggestions[0].id}`)
+        }
   }
 
 
 };
 
-export const NavbarComponent = () => {
+const Navbar = (props) => {
   const auth = useSelector( state => state.auth );
   const [suggestions, setSuggestions] = React.useState([]);
   const dispatch = useDispatch();
@@ -41,9 +51,12 @@ export const NavbarComponent = () => {
     <div className="container navbar">
     <div className="searchBar">
       <FaSearch className="searchBarIcon" size={'1.5rem'} color='#777'/>
-      <input className="search"
-             placeholder='username (ex: nikodevv)'
-             onChange={(e)=>_.debounce(helpers.findUserNames,250)(setSuggestions, e.target.value)}/>
+      <form onSubmit={(e)=>helpers.navigateToProfile(suggestions, props.history, e)}>
+        <input className="search"
+               name="search"
+               placeholder='username (ex: nikodevv)'
+               onChange={(e)=>_.debounce(helpers.findUserNames,250)(setSuggestions, e.target.value)}/>
+      </form>
     </div>
 
 
@@ -76,4 +89,5 @@ export const NavbarComponent = () => {
   </div>
 };
 
+export const NavbarComponent = withRouter(Navbar);
 export default NavbarComponent;
