@@ -4,7 +4,8 @@ import * as redux from "react-redux";
 import Adapter from "enzyme-adapter-react-16/build";
 import configureMockStore from 'redux-mock-store';
 import UserButtons from './UserButtons';
-import {initialState} from "../../reducers/modals";
+import {initialState as initialModalState} from "../../reducers/modals";
+import {initialState as initialAuthState} from "../../reducers/auth";
 import {modalActionCreators} from "../../actions";
 
 configure({adapter: new Adapter()});
@@ -16,15 +17,18 @@ describe('<UserButtons />', () => {
   });
 
   test('renders', () => {
-    const wrapper = shallow(<redux.Provider store={mockStore({})}>
+    const wrapper = shallow(<redux.Provider store={mockStore({auth: initialAuthState})}>
       <UserButtons />
     </redux.Provider>);
     expect(wrapper).toMatchSnapshot();
   });
 
-  test('renders', () => {
+  test('+ button calls dispatch with modal launching action', () => {
     const appState = {
-      modals: JSON.parse(JSON.stringify(initialState))
+      modals: initialModalState,
+      auth: {
+        loggedIn: true
+      }
     };
     const mockFn = jest.fn();
     // noinspection JSCheckFunctionSignatures // WebStorm gives incorrect warning on this line
