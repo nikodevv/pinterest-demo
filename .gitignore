@@ -11,7 +11,6 @@
 
 # production
 /build
-src/config/firebaseConfig.ts
 
 # misc
 .DS_Store
@@ -26,5 +25,4 @@ yarn-error.log*
 .firebase/
 .idea/workspace.xml
 .idea/
-src/config/rebrandlyConfig.js
 
