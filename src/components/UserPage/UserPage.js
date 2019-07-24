@@ -61,7 +61,7 @@ const UserPage = (props) => {
 
   return <div className="container-row center">
     <div className="userPage">
-      <Columns>
+      <Columns rootStyles={{overflow: 'visible'} }>
         {
           posts.slice(0,Math.min(maxItems,posts.length)).map((post, i) => {
             return(<a key={i} href={post.linkUrl} target={'_blank'}>
