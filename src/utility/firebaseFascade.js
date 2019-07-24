@@ -33,6 +33,7 @@ export class FirestoreData {
     const uid = firebase.auth().currentUser.uid;
     return UsersRef().doc(uid).set({username}, {merge: true});
   };
+
   static fetchUserPosts = async (uid) => {
     const query = await UsersRef().doc(uid).collection('posts').get();
     if (query.empty === true){

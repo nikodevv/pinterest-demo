@@ -9,6 +9,7 @@ import {FirebaseAuth, FirestoreData} from "../../utility/firebaseFascade";
 import {authActionCreators, authActions} from "../../actions";
 import {mockAuthBuilder} from "../../testAssets/firebaseMocks";
 
+
 const mockStore = configureMockStore();
 configure({adapter: new Adapter()});
 

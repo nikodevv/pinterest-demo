@@ -7,6 +7,7 @@ import Register, {helpers} from './Register';
 import {FirestoreData} from "../../utility/firebaseFascade";
 import {authActionCreators} from "../../actions";
 
+
 const mockStore = configureMockStore();
 configure({adapter: new Adapter()});
 window.alert = jest.fn(); // Has to be hijacked in outermost scope
