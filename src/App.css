@@ -61,15 +61,16 @@ h1 {
   outline: 0;
   height: 1.5rem;
   margin-top: 1rem;
-  color: #9d9d9d;
+  color: white;
   border-radius: 0.25rem;
   border-color: transparent;
-  background-color: white;
-  box-shadow: 0 0 0 0.1rem #9d9d9d;
+  background-color: #08a632;
+  box-shadow: 0 0 0 0.1rem #08a632;
 }
 
 .modalContainer button:disabled {
   color: white;
+  box-shadow: none;
   background-color: #9d9d9d;
 }
 .modalContainer button:active {
