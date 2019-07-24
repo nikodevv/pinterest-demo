@@ -1,7 +1,8 @@
 import firebaseConfig from '../config/firebaseConfig';
 import axios from "axios";
+import {rebrandlyConfig} from "../config/rebrandlyConfig";
 
-const API_KEY = firebaseConfig.apiKey;
+const config = rebrandlyConfig;
 
 export class AxiosWrapper {
   static shortenLink = (link) => {
@@ -11,9 +12,8 @@ export class AxiosWrapper {
     };
     let requestHeaders = {
       "Content-Type": "application/json",
-      "apikey": "d48c10a11e0d477792cdb4de04cea20e",
-      "workspace": "2bdcf71bcb2348e1b511aad23b4999dd"
-    }
+      ...config
+    };
     return axios.post(
       "https://api.rebrandly.com/v1/links",
       linkRequest,

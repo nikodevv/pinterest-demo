@@ -6,7 +6,7 @@ import { FaTrashAlt, FaLink } from 'react-icons/fa';
 import {FirestoreData} from "../../utility/firebaseFascade";
 import './UserPage.css'
 import {AxiosWrapper} from "../../utility/axiosFascade";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {modalActionCreators} from "../../actions";
 
 export const helpers = {
@@ -35,13 +35,16 @@ const UserPage = (props) => {
   const [posts, setPosts] = React.useState([]); // Raw models data
   const [maxItems, setMaxItems] = React.useState(6);
   const [needsToReload, setNeedsToReload] = React.useState(false);
+  const loggedIn = useSelector(state=>state.auth.loggedIn);
   const handleScrollListener = _.throttle(() => helpers.handleScroll(setMaxItems, maxItems),250);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
+  // data is fetched if user scrolls to the bottom of page (intentional refresh)
   React.useEffect(()=>{
     helpers.fetchData(userId, setPosts);
   }, [userId, maxItems]);
 
+  // data is re-fetched if needsToReload is true (after an item is deleted)
   React.useEffect(()=>{
     if ( needsToReload===true ) {
       helpers.fetchData(userId, setPosts);
@@ -60,8 +63,8 @@ const UserPage = (props) => {
         {
           posts.slice(0,Math.min(maxItems,posts.length)).map((post, i) => {
             return(<a key={i} href={post.linkUrl} target={'_blank'}>
-                {ownUserId === userId &&
-                <div className="deleteIconContainer">
+                {ownUserId === userId && loggedIn===true &&
+                <div className="iconContainer">
                   <div className="icon link">
                     <FaLink size={20} onClick={async (e)=>{
                       e.preventDefault();
