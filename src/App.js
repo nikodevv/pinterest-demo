@@ -5,6 +5,8 @@ import "firebase/firestore";
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from "redux";
 import thunk from 'redux-thunk';
+import { persistStore } from 'redux-persist';
+import { PersistGate} from 'redux-persist/integration/react'
 import './App.css';
 import firebaseConfig from './config/firebaseConfig';
 import Router from "./components/Router";
@@ -14,7 +16,6 @@ import ModalsLauncher from "./components/ModalsLauncher";
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 export const db = firebase.firestore(firebaseApp);
-
 const store = createStore(
     rootReducer,
     applyMiddleware(thunk)
@@ -23,11 +24,13 @@ const store = createStore(
 export const App = () => {
   return (
       <Provider store={store}>
-        <div className="App">
-          <ModalsLauncher/>
-          <UserButtons/>
-          <Router/>
-        </div>
+        <PersistGate loading={null} persistor={persistStore(store)}>
+          <div className="App">
+            <ModalsLauncher/>
+            <UserButtons/>
+            <Router/>
+          </div>
+        </PersistGate>
       </Provider>
   );
 };

@@ -30,9 +30,9 @@ describe('<UserPage />', () => {
 
   test('renders', () => {
     const wrapper = shallow(
-      <Provider store={mockStore()}>
+      <Provider store={mockStore({auth: {loggedIn: true}})}>
         <UserPage match={urlParam}/>
-      </Provider>);
+      </Provider>)
     expect(wrapper).toMatchSnapshot();
   });
 

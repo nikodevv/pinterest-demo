@@ -6,11 +6,11 @@ import UserPage from "../UserPage";
 export const Router = () => {
   return <BrowserRouter>
     <div className="container-column center">
-      <Navbar/>
       <Switch>
         <Route path='/' exact={true}/>
         <Route path='/userPage/:userId' component={UserPage}/>
       </Switch>
+      <Navbar/>
     </div>
   </BrowserRouter>
 };

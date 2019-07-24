@@ -9,6 +9,7 @@ import './UserPage.css'
 import {AxiosWrapper} from "../../utility/axiosFascade";
 import {modalActionCreators} from "../../actions";
 
+// helpers are spun into own object for easy mocking
 export const helpers = {
   fetchData: async (userId, setPosts) => {
     const userPosts = await FirestoreData.fetchUserPosts(userId);
@@ -52,6 +53,7 @@ const UserPage = (props) => {
     }
   }, [needsToReload, userId]);
 
+  // Attach scroll listener for infinite scrolling
   React.useEffect(()=>{
     window.addEventListener('scroll', handleScrollListener);
     return () => window.removeEventListener('scroll', handleScrollListener);
@@ -59,7 +61,7 @@ const UserPage = (props) => {
 
   return <div className="container-row center">
     <div className="userPage">
-      <Columns>
+      <Columns rootStyles={{overflow: 'visible'} }>
         {
           posts.slice(0,Math.min(maxItems,posts.length)).map((post, i) => {
             return(<a key={i} href={post.linkUrl} target={'_blank'}>
