@@ -4,22 +4,22 @@ import { GithubLoginButton } from "react-social-login-buttons";
 import './Navbar.css';
 import { FaSearch } from 'react-icons/fa';
 
-import { firebaseAuth } from "../../utility/firebaseFascade";
+import {FirebaseAuth, FirestoreData} from "../../utility/firebaseFascade";
 import {authActionCreators} from "../../actions";
 
 export const helpers = {
   login: async (dispatch) => {
     const startLoadingAction = authActionCreators.startLoading();
     dispatch(startLoadingAction);
-    await firebaseAuth.loginWithGithub();
+    await FirebaseAuth.loginWithGithub();
     const loginAction = authActionCreators.login();
     dispatch(loginAction);
-    const userModel = await firebaseAuth.fetchOwnUserModel();
+    const userModel = await FirestoreData.fetchOwnUserModel();
     const storeUsernameAction = authActionCreators.finishLogin(userModel);
     dispatch(storeUsernameAction);
   },
   signOut: async (dispatch) => {
-    await firebaseAuth.signOut();
+    await FirebaseAuth.signOut();
     dispatch(authActionCreators.signOut());
   }
 };

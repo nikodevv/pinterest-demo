@@ -1,0 +1,37 @@
+.userPage {
+  width: 100%;
+  min-height: 95vh;
+  margin: 2rem 10rem 0 10rem;
+}
+
+img {
+  margin-top: 0.25rem;
+  margin-left: 0.25rem;
+  width: 22rem;
+  box-shadow: 0 0 0 0.1rem #333;
+  border-radius: 0.75rem;
+}
+
+img:hover {
+  box-shadow: 0 0 0 0.25rem #91b9ff;
+}
+
+.deleteIconContainer {
+  width:100%;
+  position: relative;
+  display:flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  top: 2.5rem;
+}
+
+.deleteIcon {
+  padding: 0.2rem;
+  margin-right: 1.3rem;
+  border-radius: 0.5rem;
+  color: #ca7c77;
+}
+
+.deleteIcon:hover {
+  box-shadow: 0 0 0 0.1rem #91b9ff;
+}

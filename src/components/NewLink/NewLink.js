@@ -1,12 +1,12 @@
 import React from 'react';
 import './NewLink.css';
-import {firebaseAuth} from "../../utility/firebaseFascade";
+import {FirestoreData} from "../../utility/firebaseFascade";
 import {modalActionCreators} from "../../actions";
 import {useDispatch} from "react-redux";
 
 const helpers = {
   saveLink: (imgUrl, linkUrl, dispatch)=>{
-    firebaseAuth.addPost({
+    FirestoreData.addPost({
       imgUrl,
       linkUrl
     });
@@ -36,10 +36,10 @@ const NewLink = () => {
       </div>
       <div className="center container-row">
         <button disabled={(!linkUrl || !imgUrl)}
-                onClick={(e)=>{{
+                onClick={(e)=>{
                   e.preventDefault();
                   helpers.saveLink(imgUrl, linkUrl, dispatch)
-                }}}>
+                }}>
           Save
         </button>
       </div>
