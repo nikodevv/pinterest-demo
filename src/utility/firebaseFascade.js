@@ -58,4 +58,8 @@ export class FirestoreData {
       username: null
     }
   };
+
+  static deletePost = (uid, itemId) => {
+    return UsersRef().doc(uid).collection('posts').doc(itemId).delete();
+  }
 }

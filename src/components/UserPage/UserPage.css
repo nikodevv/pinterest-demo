@@ -6,8 +6,22 @@
 
 img{
   margin-top: 0.25rem;
+  margin-left: 0.25rem;
   width: 22rem;
   box-shadow: 0 0 0 0.1rem #333;
   border-radius: 0.75rem;
 }
 
+.deleteIconContainer {
+  width:100%;
+  position: relative;
+  display:flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  top: 2.5rem;
+}
+
+.deleteIcon {
+  margin-right: 1.5rem;
+  color: #ca7c77;
+}
