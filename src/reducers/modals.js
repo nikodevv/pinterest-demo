@@ -3,6 +3,8 @@ import {authActions, modalActions} from "../actions";
 export const initialState = {
   showNewLinkModal: false,
   showRegisterModal: false,
+  showShortLinkModal: false,
+  shortLink: null,
 };
 
 export const modals = (state = initialState, action ) => {
@@ -14,6 +16,8 @@ export const modals = (state = initialState, action ) => {
         return {...initialState, showRegisterModal: true};
       }
       return {...state, showRegisterModal: false };
+    case modalActions.TOGGLE_SHORT_LINK_MODAL:
+      return {...initialState, showShortLinkModal: !state.showShortLinkModal, shortLink: action.link};
     default:
       return {...state }
   }

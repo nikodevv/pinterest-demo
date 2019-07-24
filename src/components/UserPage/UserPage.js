@@ -2,9 +2,12 @@ import React from 'react';
 import _ from 'lodash';
 import Columns from "react-columns";
 import * as firebase from "firebase";
-import { FaTrashAlt } from 'react-icons/fa';
+import { FaTrashAlt, FaLink } from 'react-icons/fa';
 import {FirestoreData} from "../../utility/firebaseFascade";
 import './UserPage.css'
+import {AxiosWrapper} from "../../utility/axiosFascade";
+import {useDispatch} from "react-redux";
+import {modalActionCreators} from "../../actions";
 
 export const helpers = {
   fetchData: async (userId, setPosts) => {
@@ -18,6 +21,11 @@ export const helpers = {
   },
   deleteItem: (userId, itemId) => {
     return FirestoreData.deletePost(userId, itemId)
+  },
+  shortenLink: async (link) => {
+    const response = await AxiosWrapper.shortenLink(link);
+    console.log(response.status === 200 ? response.data.shortUrl : "")
+    return response.status === 200 ? response.data.shortUrl : "";
   }
 };
 
@@ -26,11 +34,20 @@ const UserPage = (props) => {
   const ownUserId = !!firebase.auth().currentUser ? firebase.auth().currentUser.uid : null;
   const [posts, setPosts] = React.useState([]); // Raw models data
   const [maxItems, setMaxItems] = React.useState(6);
+  const [needsToReload, setNeedsToReload] = React.useState(false);
   const handleScrollListener = _.throttle(() => helpers.handleScroll(setMaxItems, maxItems),250);
+  const dispatch = useDispatch()
 
   React.useEffect(()=>{
     helpers.fetchData(userId, setPosts);
-  }, [userId, maxItems, posts]);
+  }, [userId, maxItems]);
+
+  React.useEffect(()=>{
+    if ( needsToReload===true ) {
+      helpers.fetchData(userId, setPosts);
+      setNeedsToReload(false)
+    }
+  }, [needsToReload]);
 
   React.useEffect(()=>{
     window.addEventListener('scroll', handleScrollListener);
@@ -45,10 +62,18 @@ const UserPage = (props) => {
             return(<a key={i} href={post.linkUrl} target={'_blank'}>
                 {ownUserId === userId &&
                 <div className="deleteIconContainer">
-                  <div className="deleteIcon" onClick={async (e)=>{
+                  <div className="icon link">
+                    <FaLink size={20} onClick={async (e)=>{
+                      e.preventDefault();
+                      const link = await helpers.shortenLink(post.linkUrl);
+                      dispatch(modalActionCreators.toggleShortLinkModal(link));
+                    }
+                    }/>
+                  </div>
+                  <div className="icon delete" onClick={async (e)=>{
                     e.preventDefault();
                     await helpers.deleteItem(ownUserId, posts[i].id);
-                    setPosts(_.without(posts, i))
+                    setNeedsToReload(true)
                   }}><FaTrashAlt size={20}/></div>
                 </div>
                 }

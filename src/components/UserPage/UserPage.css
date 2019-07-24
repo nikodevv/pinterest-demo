@@ -24,14 +24,18 @@ img:hover {
   justify-content: flex-end;
   top: 2.5rem;
 }
-
-.deleteIcon {
+.icon{
   padding: 0.2rem;
-  margin-right: 1.3rem;
   border-radius: 0.5rem;
-  color: #ca7c77;
 }
-
-.deleteIcon:hover {
+.icon:hover {
   box-shadow: 0 0 0 0.1rem #91b9ff;
 }
+.delete {
+  margin-right: 1.3rem;
+  color: #ca7c77;
+}
+.link {
+  color: #91b9ff;
+}
+
