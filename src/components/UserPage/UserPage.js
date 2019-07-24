@@ -3,10 +3,10 @@ import _ from 'lodash';
 import Columns from "react-columns";
 import * as firebase from "firebase";
 import { FaTrashAlt, FaLink } from 'react-icons/fa';
+import {useDispatch, useSelector} from "react-redux";
 import {FirestoreData} from "../../utility/firebaseFascade";
 import './UserPage.css'
 import {AxiosWrapper} from "../../utility/axiosFascade";
-import {useDispatch, useSelector} from "react-redux";
 import {modalActionCreators} from "../../actions";
 
 export const helpers = {
