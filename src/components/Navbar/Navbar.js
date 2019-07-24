@@ -41,7 +41,7 @@ export const helpers = {
 
 };
 
-const Navbar = (props) => {
+export const Navbar = (props) => {
   const auth = useSelector( state => state.auth );
   const [suggestions, setSuggestions] = React.useState([]);
   const [showSuggestions, setShowSuggestions] = React.useState(false);

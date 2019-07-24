@@ -3,8 +3,9 @@ import configureMockStore from 'redux-mock-store';
 import Adapter from "enzyme-adapter-react-16/build";
 import {configure, mount, shallow} from 'enzyme';
 import * as firebase from "firebase";
-import Navbar, {helpers} from './Navbar';
+import Navbar, {Navbar as TestNavbar, helpers} from './Navbar';
 import {Provider} from "react-redux";
+import * as router from 'react-router';
 import {FirebaseAuth, FirestoreData} from "../../utility/firebaseFascade";
 import {authActionCreators, authActions} from "../../actions";
 import {mockAuthBuilder} from "../../testAssets/firebaseMocks";
@@ -22,6 +23,7 @@ describe('<Navbar />', () => {
   };
 
   beforeEach(()=>{
+    jest.spyOn(router, 'withRouter').mockImplementation((x)=>x);
     FirestoreData.loginWithGithub = () => new Promise(resolve=>resolve()); // disables outbound call
   });
 
@@ -43,7 +45,7 @@ describe('<Navbar />', () => {
     let loginSpy = jest.spyOn(helpers, 'login').mockImplementation(mockFn);
     const wrapper = mount(
       <Provider store={mockStore(initialStoreData)}>
-        <Navbar/>
+        <TestNavbar/>
       </Provider>);
     const GitHubButton = wrapper.find('#githubButton').last();
     GitHubButton.simulate('click');
@@ -55,7 +57,7 @@ describe('<Navbar />', () => {
 
     const wrapper = mount(
       <Provider store={mockStore(initialStoreData)}>
-        <Navbar/>
+        <TestNavbar/>
       </Provider>);
     const githubBtnExists = wrapper.exists('#githubButton');
     expect(githubBtnExists).toEqual(false);
@@ -67,7 +69,7 @@ describe('<Navbar />', () => {
 
     const wrapper = mount(
       <Provider store={mockStore(initialStoreData)}>
-        <Navbar/>
+        <TestNavbar/>
       </Provider>);
     const signOutBtn= wrapper.exists('#signOut');
     expect(signOutBtn).toEqual(true);
@@ -82,7 +84,7 @@ describe('<Navbar />', () => {
 
     const wrapper = mount(
       <Provider store={mockStore(initialStoreData)}>
-        <Navbar/>
+        <TestNavbar/>
       </Provider>);
     const signOutBtn = wrapper.find('#signOut').last();
     expect(mockFn).toBeCalledTimes(0);
