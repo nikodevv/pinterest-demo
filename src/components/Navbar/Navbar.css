@@ -83,3 +83,6 @@ input.search {
 .suggestionItem {
     margin-bottom: 0.1rem;
 }
+form {
+    width: 90%
+}

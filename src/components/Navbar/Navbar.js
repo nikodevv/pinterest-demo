@@ -44,6 +44,7 @@ export const helpers = {
 const Navbar = (props) => {
   const auth = useSelector( state => state.auth );
   const [suggestions, setSuggestions] = React.useState([]);
+  const [showSuggestions, setShowSuggestions] = React.useState(false);
   const dispatch = useDispatch();
   const { loggedIn, username} = auth;
 
@@ -55,6 +56,8 @@ const Navbar = (props) => {
         <input className="search"
                name="search"
                placeholder='username (ex: nikodevv)'
+               onFocus={()=>setShowSuggestions(true)}
+               onBlur={()=>setShowSuggestions(false)}
                onChange={(e)=>_.debounce(helpers.findUserNames,250)(setSuggestions, e.target.value)}/>
       </form>
     </div>
@@ -75,10 +78,10 @@ const Navbar = (props) => {
       </div>
     }
     </div>
-    { suggestions.length >= 1 &&
+    { suggestions.length >= 1 && showSuggestions &&
       <div className="suggestionsContainer">
         <div className="container-row suggestions">
-          <div className="suggestionItem">
+          <div className={"suggestionItem"}>
             {suggestions.length >= 1 &&
             suggestions.map(suggestion => suggestion.username)
             }
