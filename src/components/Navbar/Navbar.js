@@ -58,7 +58,7 @@ const Navbar = (props) => {
         <form onSubmit={(e)=>helpers.navigateToProfile(suggestions, props.history, e)}>
           <input className="search"
                  name="search"
-                 placeholder='username (ex: nikodevv)'
+                 placeholder='username (ex: nikodevv, testUser1)'
                  onFocus={()=>setShowSuggestions(true)}
                  onBlur={()=>setShowSuggestions(false)}
                  onChange={(e)=>_.debounce(helpers.findUserNames,250)(setSuggestions, e.target.value)}/>
