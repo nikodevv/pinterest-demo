@@ -7,7 +7,7 @@
     "enzyme": "^3.10.0",
     "firebase": "^6.3.0",
     "firebaseui": "^4.1.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-columns": "^1.2.1",
